@@ -1,4 +1,5 @@
 import React from 'react';
+import jwt from 'jsonwebtoken';
 import nookies from 'nookies';
 import { useRouter } from 'next/router';
 
@@ -77,6 +78,7 @@ export default function Gallery(props) {
 }
 export async function getServerSideProps(ctx) {
   const cookies = nookies.get(ctx);
+  const refreshToken = cookies['REFRESH_TOKEN'];
   let user = cookies['USER'];
   const theme = cookies['THEME'] || 'light';
 
@@ -85,6 +87,17 @@ export async function getServerSideProps(ctx) {
       redirect: {
         permanent: false,
         destination: '/',
+      },
+      props: {},
+    };
+  }
+  try {
+    jwt.verify(refreshToken, process.env.KEY);
+  } catch (err) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
       },
       props: {},
     };
