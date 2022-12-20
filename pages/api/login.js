@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     db.on('error', () => console.error('database connection error'));
     db.once('open', () => console.log('database connection successfully'));
 
-    const userData = req.body.user;
+    const userData = JSON.parse(req.body).user;
     const user = await UserDB.findOne().where('email').equals(userData.email);
 
     if (!user) throw new Error('User Not Found:404');
