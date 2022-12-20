@@ -21,6 +21,7 @@
     "rules": {
       "linebreak-style": ["error", "windows"],
       "dot-notation": "off",
+      "react/destructuring-assignment": "off",
       "react/prop-types": "off",
       "react/jsx-filename-extension": "off",
       "react/jsx-props-no-spreading": "off"
