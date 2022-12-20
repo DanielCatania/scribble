@@ -1,0 +1,37 @@
+/* eslint-disable no-console */
+import { createHash } from 'crypto';
+import jwt from 'jsonwebtoken';
+import UserDB from '../../src/api/models/users';
+import db from '../../src/api/config/db';
+
+export default async function handler(req, res) {
+  try {
+    db.on('error', () => console.error('database connection error'));
+    db.once('open', () => console.log('database connection successfully'));
+
+    const userData = req.body.user;
+    const user = await UserDB.findOne().where('email').equals(userData.email);
+
+    if (!user) throw new Error('User Not Found:404');
+
+    userData.password = createHash('sha256').update(`${userData.password}:${user['_id']}`).digest('hex');
+
+    if (userData.password !== user.password) throw new Error('Wrong password:400');
+
+    const accessToken = jwt.sign(user['_doc'], process.env.KEY, {
+      expiresIn: '60s',
+    });
+    const refreshToken = jwt.sign({ id: user['_id'], name: user.name, email: user.email }, process.env.KEY, {
+      expiresIn: '14d',
+    });
+
+    user.password = 'private';
+
+    res.status(200).json({
+      message: 'Successful Login', user, accessToken, refreshToken,
+    });
+  } catch (err) {
+    const error = err.message.split(':');
+    res.status(error[1] || 500).json({ message: error[0] || err.message });
+  }
+}
