@@ -152,3 +152,23 @@ export default function SignUp() {
     </div>
   );
 }
+
+export async function getServerSideProps(ctx) {
+  const cookies = nookies.get(ctx);
+  let user = cookies['USER'];
+
+  if (user) {
+    user = JSON.parse(user);
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/gallery',
+      },
+      props: {},
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
