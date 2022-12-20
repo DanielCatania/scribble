@@ -1,0 +1,101 @@
+import React from 'react';
+import nookies from 'nookies';
+import { useRouter } from 'next/router';
+
+export default function Gallery(props) {
+  const router = useRouter();
+  const [theme, setTheme] = React.useState(props.theme);
+
+  const { name } = props.user;
+  const { first } = name;
+  const { last } = name;
+
+  const lightTheme = {
+    color: 'black',
+    backgroundColor: 'white',
+  };
+  const darkTheme = {
+    color: 'white',
+    backgroundColor: 'black',
+  };
+  const selectedTheme = theme === 'light' ? lightTheme : darkTheme;
+
+  const style = {
+    ...selectedTheme,
+    padding: '1em',
+    margin: 0,
+    height: '90vh',
+  };
+
+  return (
+    <div style={style}>
+      <button
+        type="button"
+        onClick={() => {
+          nookies.destroy(null, 'USER');
+          nookies.destroy(null, 'THEME');
+          nookies.destroy(null, 'REFRESH_TOKEN');
+          nookies.destroy(null, 'ACCESS_TOKEN');
+
+          router.push('/');
+        }}
+      >
+        Logout
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          if (theme === 'light') {
+            nookies.set(null, 'THEME', 'dark', {
+              maxAge: 1209600,
+              path: '/',
+            });
+            setTheme('dark');
+          } else {
+            nookies.set(null, 'THEME', 'light', {
+              path: '/',
+            });
+            setTheme('light');
+          }
+        }}
+      >
+        Change Theme
+      </button>
+      <h1>Gallery</h1>
+      <h2>
+        Hello,
+        {' '}
+        <span style={{ textTransform: 'capitalize' }}>
+          {first}
+          {' '}
+          {last}
+          !
+        </span>
+      </h2>
+    </div>
+  );
+}
+export async function getServerSideProps(ctx) {
+  const cookies = nookies.get(ctx);
+  let user = cookies['USER'];
+  const theme = cookies['THEME'] || 'light';
+
+  if (!user) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
+      props: {},
+    };
+  }
+
+  user = JSON.parse(user);
+
+  return {
+    props: {
+      user,
+      theme,
+    },
+  };
+}
