@@ -1,8 +1,11 @@
 import React from 'react';
+import nookies from 'nookies';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import verifyPassword from '../src/utils/verifyPassword';
 
 export default function SignUp() {
+  const router = useRouter();
   const [user, setUser] = React.useState({
     name: {
       first: '',
@@ -19,21 +22,43 @@ export default function SignUp() {
     <div>
       <h1>Sign Up</h1>
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
 
           try {
             verifyPassword(user.password, confirmPassword);
-            setError('');
-            setUser({
-              name: {
-                first: '',
-                last: '',
-              },
-              email: '',
-              password: '',
+
+            const data = await fetch('/api/signUp', {
+              method: 'POST',
+              body: JSON.stringify({ user }),
+            }).then((res) => res.json());
+
+            nookies.set(null, 'USER', JSON.stringify({ name: data.user.name, email: data.user.email }), {
+              maxAge: 1209600,
+              path: '/',
             });
-            setConfirmPassword('');
+
+            nookies.set(null, 'THEME', data.user.theme, {
+              maxAge: 1209600,
+              path: '/',
+            });
+
+            nookies.set(
+              null,
+              'REFRESH_TOKEN',
+              data.refreshToken,
+              {
+                maxAge: 1209600,
+                path: '/',
+              },
+            );
+
+            nookies.set(null, 'ACCESS_TOKEN', data.accessToken, {
+              maxAge: 60,
+              path: '/',
+            });
+
+            router.push('/gallery');
           } catch (err) {
             setError(err.message);
           }
@@ -123,7 +148,6 @@ export default function SignUp() {
         <input type="submit" value="Sign Up" />
       </form>
       <p style={{ color: 'red' }}>{error}</p>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
       <Link href="/">Home</Link>
     </div>
   );
