@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import { createHash } from 'crypto';
 import jwt from 'jsonwebtoken';
-import UserDB from '../../src/api/models/users';
-import db from '../../src/api/config/db';
+import UserDB from '../../../src/api/models/users';
+import db from '../../../src/api/config/db';
 
 export default async function handler(req, res) {
   try {
