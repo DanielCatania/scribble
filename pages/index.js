@@ -7,6 +7,7 @@ export default function Home() {
     <div>
       <h1>Scribble</h1>
       <Link href="/signUp">Sign Up</Link>
+      <Link href="/login">Login</Link>
     </div>
   );
 }
