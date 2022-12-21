@@ -93,6 +93,40 @@ export async function getServerSideProps(ctx) {
   }
   try {
     jwt.verify(refreshToken, process.env.KEY);
+
+    const { accessToken } = await fetch(`${process.env.URL}/api/token`, {
+      method: 'POST',
+      body: JSON.stringify({ refreshToken }),
+    }).then((res) => res.json());
+
+    const data = await fetch(`${process.env.URL}/api/login/token`, {
+      method: 'PUT',
+      body: JSON.stringify({ accessToken }),
+    }).then((res) => res.json());
+
+    nookies.set(ctx, 'USER', JSON.stringify({ name: data.user.name, email: data.user.email }), {
+      path: '/',
+    });
+
+    nookies.set(ctx, 'THEME', data.user.theme, {
+      maxAge: 1209600,
+      path: '/',
+    });
+
+    nookies.set(
+      ctx,
+      'REFRESH_TOKEN',
+      data.refreshToken,
+      {
+        maxAge: 1209600,
+        path: '/',
+      },
+    );
+
+    nookies.set(ctx, 'ACCESS_TOKEN', accessToken, {
+      maxAge: 60,
+      path: '/',
+    });
   } catch (err) {
     return {
       redirect: {
