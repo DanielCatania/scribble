@@ -4,6 +4,9 @@ import nookies from 'nookies';
 import { useRouter } from 'next/router';
 
 export default function Gallery(props) {
+  const cookies = nookies.get(null);
+  const refreshToken = cookies['REFRESH_TOKEN'];
+
   const router = useRouter();
   const [theme, setTheme] = React.useState(props.theme);
 
@@ -45,19 +48,27 @@ export default function Gallery(props) {
       </button>
       <button
         type="button"
-        onClick={() => {
-          if (theme === 'light') {
-            nookies.set(null, 'THEME', 'dark', {
-              maxAge: 1209600,
-              path: '/',
-            });
-            setTheme('dark');
-          } else {
-            nookies.set(null, 'THEME', 'light', {
-              path: '/',
-            });
-            setTheme('light');
-          }
+        onClick={async () => {
+          const { accessToken } = await fetch('/api/token', {
+            method: 'POST',
+            body: JSON.stringify({ refreshToken }),
+          }).then((res) => res.json());
+
+          nookies.set(null, 'ACCESS_TOKEN', accessToken, {
+            maxAge: 60,
+            path: '/',
+          });
+
+          const data = await fetch('/api/change/theme', {
+            method: 'PUT',
+            body: JSON.stringify({ accessToken }),
+          }).then((res) => res.json());
+          const newTheme = data.theme;
+          setTheme(newTheme);
+
+          nookies.set(null, 'THEME', newTheme, {
+            path: '/',
+          });
         }}
       >
         Change Theme
