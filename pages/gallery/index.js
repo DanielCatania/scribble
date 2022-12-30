@@ -8,6 +8,8 @@ export default function Gallery(props) {
   const refreshToken = cookies['REFRESH_TOKEN'];
 
   const router = useRouter();
+
+  const { notes } = props;
   const [theme, setTheme] = React.useState(props.theme);
   const [displayBox, setDisplayBox] = React.useState('none');
   const [title, setTitle] = React.useState('');
@@ -78,6 +80,15 @@ export default function Gallery(props) {
         Change Theme
       </button>
       <h1>Gallery</h1>
+      <ul>
+        {notes.map((note) => (
+          <li key={note.title}>
+            <a href={`/gallery/notes/${note['_id']}`}>
+              {note.title}
+            </a>
+          </li>
+        ))}
+      </ul>
       <form style={{ display: displayBox, ...styleBox }}>
         <button
           type="button"
@@ -130,7 +141,8 @@ export default function Gallery(props) {
 export async function getServerSideProps(ctx) {
   const cookies = nookies.get(ctx);
   const refreshToken = cookies['REFRESH_TOKEN'];
-  let user = cookies['USER'];
+  const user = cookies['USER'];
+  let notes = [];
   const theme = cookies['THEME'] || 'light';
 
   if (!user) {
@@ -154,6 +166,12 @@ export async function getServerSideProps(ctx) {
       method: 'PUT',
       body: JSON.stringify({ accessToken }),
     }).then((res) => res.json());
+
+    const notesData = await fetch(`${process.env.URL}/api/note/getAllNotes`, {
+      method: 'POST',
+      body: JSON.stringify({ accessToken }),
+    }).then((res) => res.json());
+    notes = notesData.notes;
 
     nookies.set(ctx, 'USER', JSON.stringify({ name: data.user.name, email: data.user.email }), {
       path: '/',
@@ -187,13 +205,10 @@ export async function getServerSideProps(ctx) {
       props: {},
     };
   }
-
-  user = JSON.parse(user);
-
   return {
     props: {
-      user,
       theme,
+      notes,
     },
   };
 }
