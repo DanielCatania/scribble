@@ -9,10 +9,8 @@ export default function Gallery(props) {
 
   const router = useRouter();
   const [theme, setTheme] = React.useState(props.theme);
-
-  const { name } = props.user;
-  const { first } = name;
-  const { last } = name;
+  const [displayBox, setDisplayBox] = React.useState('none');
+  const [title, setTitle] = React.useState('');
 
   const lightTheme = {
     color: 'black',
@@ -29,6 +27,12 @@ export default function Gallery(props) {
     padding: '1em',
     margin: 0,
     height: '90vh',
+  };
+
+  const styleBox = {
+    position: 'fixed',
+    right: '20px',
+    bottom: '10vh',
   };
 
   return (
@@ -74,16 +78,52 @@ export default function Gallery(props) {
         Change Theme
       </button>
       <h1>Gallery</h1>
-      <h2>
-        Hello,
-        {' '}
-        <span style={{ textTransform: 'capitalize' }}>
-          {first}
-          {' '}
-          {last}
-          !
-        </span>
-      </h2>
+      <form style={{ display: displayBox, ...styleBox }}>
+        <button
+          type="button"
+          onClick={() => setDisplayBox('none')}
+        >
+          Close
+        </button>
+        <input
+          type="text"
+          placeholder="Add Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <button
+          type="submit"
+          onClick={async (e) => {
+            e.preventDefault();
+
+            const { accessToken } = await fetch('/api/token', {
+              method: 'POST',
+              body: JSON.stringify({ refreshToken }),
+            }).then((res) => res.json());
+
+            nookies.set(null, 'ACCESS_TOKEN', accessToken, {
+              maxAge: 60,
+              path: '/',
+            });
+
+            const { note } = await fetch('/api/note/create', {
+              method: 'POST',
+              body: JSON.stringify({ accessToken, note: { title, content: '' } }),
+            }).then((res) => res.json());
+
+            router.push(`/gallery/notes/${note['_id']}`);
+          }}
+        >
+          Create Note
+        </button>
+      </form>
+      <button
+        type="button"
+        style={{ display: displayBox === 'block' ? 'none' : 'block', ...styleBox }}
+        onClick={() => setDisplayBox('block')}
+      >
+        Create Note
+      </button>
     </div>
   );
 }
