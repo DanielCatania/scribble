@@ -1,9 +1,25 @@
-import { DefaultTheme } from "styled-components";
-
-const theme: DefaultTheme = {
+const theme = {
   colors: {
     neutral: {
       "050": "#f5f5f5",
+      "100": "#ADADAD",
+      "150": "#757575",
+      "200": "#4F4F4F",
+      "250": "#1D1D1D",
+    },
+    primary: {
+      "050": "#FF6666",
+      "100": "#E05A5A",
+      "150": "#C75050",
+      "200": "#A14040",
+      "250": "#612727",
+    },
+    secondary: {
+      "050": "#4C76E0",
+      "100": "#3D5EB3",
+      "150": "#334F94",
+      "200": "#2A417A",
+      "250": "#1D2C54",
     },
   },
 };
