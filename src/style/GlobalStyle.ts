@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: column;
   }
 
-  body {
+  body, main {
     display: flex;
     flex: 1;
     flex-direction: column;
