@@ -1,6 +1,6 @@
 import React from "react";
 import { Main } from "./style";
-import Text from "@/components/Text/";
+import Text from "@/patterns/Text";
 
 export default function Home() {
   return (
