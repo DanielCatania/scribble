@@ -20,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     flex: 1;
     flex-direction: column;
+    background-color: ${({ theme }) => theme.colors.neutral["050"]};
   }
 
   #__next {
