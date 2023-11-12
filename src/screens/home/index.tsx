@@ -2,6 +2,7 @@ import React from "react";
 import { Main } from "./style";
 import Text from "@/patterns/Text";
 import Button, { LargeButton } from "@/patterns/Button";
+import Link from "@/patterns/Link";
 
 export default function Home() {
   return (
@@ -18,9 +19,20 @@ export default function Home() {
       <Text>Scribble</Text>
       <Text variant="body_02">Scribble</Text>
       <Button>Click</Button>
-      <LargeButton color={{ palette: "neutral", tone: "250" }} background={{ palette: "secondary", tone: "050" }}>
+      <LargeButton
+        color={{ palette: "neutral", tone: "250" }}
+        background={{ palette: "secondary", tone: "050" }}
+      >
         Click
       </LargeButton>
+      <Link href="/">Link</Link>
+      <Link
+        href="/"
+        type="large"
+        style={{ background: { palette: "secondary", tone: "100" } }}
+      >
+        Link
+      </Link>
     </Main>
   );
 }
