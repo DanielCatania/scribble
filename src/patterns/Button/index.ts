@@ -36,10 +36,10 @@ const Button = styled.button.withConfig({
 `;
 
 export const LargeButton = styled(Button)`
-  width: 120px;
+  width: 120px !important;
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
-    width: 180px;
+    width: 180px !important;
   }
 `;
 
