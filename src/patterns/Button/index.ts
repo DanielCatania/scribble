@@ -4,12 +4,14 @@ import { color } from "@/type";
 export interface ButtonProps {
   background?: color;
   color?: color;
+  size?: "default" | "large";
 }
 
 const Button = styled.button.withConfig({
-  shouldForwardProp: (props) => !["background", "color"].includes(props),
+  shouldForwardProp: (props) =>
+    !["background", "color", "size"].includes(props),
 })<ButtonProps>`
-  width: 80px;
+  width: ${({ size = "default" }) => (size === "default" ? "80px" : "120px")};
   height: 40px;
   border-radius: 15px;
 
@@ -27,19 +29,12 @@ const Button = styled.button.withConfig({
   }) => theme.colors[background.palette][background.tone]};
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
-    width: 120px;
+    width: ${({ size = "default" }) =>
+      size === "default" ? "120px" : "180px"};
     height: 60px;
 
     font-size: ${({ theme }) => theme.typography.variants.button.md.size};
     font-weight: ${({ theme }) => theme.typography.variants.button.md.weight};
-  }
-`;
-
-export const LargeButton = styled(Button)`
-  width: 120px !important;
-
-  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
-    width: 180px !important;
   }
 `;
 

@@ -1,24 +1,16 @@
 import React from "react";
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
-import Button, { ButtonProps, LargeButton } from "../Button";
+import Button, { ButtonProps } from "../Button";
 
 interface LinkProps extends NextLinkProps {
   children?: React.ReactNode;
-  type?: "default" | "large";
   style?: ButtonProps;
 }
 
-export default function Link({
-  children,
-  type = "default",
-  style,
-  ...props
-}: LinkProps) {
-  const Tag = type === "default" ? Button : LargeButton;
-
+export default function Link({ children, style, ...props }: LinkProps) {
   return (
     <NextLink {...props}>
-      <Tag {...style}>{children}</Tag>
+      <Button {...style}>{children}</Button>
     </NextLink>
   );
 }
