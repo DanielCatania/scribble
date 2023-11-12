@@ -1,11 +1,9 @@
 import styled from "styled-components";
+import { color } from "@/type";
 
 interface TextProps {
   variant?: "display_01" | "heading_01" | "heading_02" | "body_01" | "body_02";
-  color?: {
-    palette: "neutral" | "primary" | "secondary";
-    tone: "050" | "100" | "150" | "200" | "250";
-  };
+  color?: color;
 }
 
 const Text = styled.p.withConfig({
