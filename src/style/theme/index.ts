@@ -95,6 +95,17 @@ const theme = {
           size: "24px",
         },
       },
+      button: {
+        family: "'Open sans', sans-serif",
+        xs: {
+          weight: "700",
+          size: "16px",
+        },
+        md: {
+          weight: "700",
+          size: "24px",
+        },
+      },
     },
   },
 };
