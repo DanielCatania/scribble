@@ -12,7 +12,7 @@ const Button = styled.button.withConfig({
   shouldForwardProp: (props) =>
     !["background", "color", "size", "inlineStyle"].includes(props),
 })<ButtonProps>`
-  width: ${({ size = "default" }) => (size === "default" ? "80px" : "120px")};
+  width: ${({ size = "default" }) => (size === "default" ? "70px" : "120px")};
   height: 40px;
   border-radius: 15px;
 
@@ -31,8 +31,8 @@ const Button = styled.button.withConfig({
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
     width: ${({ size = "default" }) =>
-      size === "default" ? "120px" : "180px"};
-    height: 60px;
+      size === "default" ? "100px" : "150px"};
+    height: 50px;
 
     font-size: ${({ theme }) => theme.typography.variants.button.md.size};
     font-weight: ${({ theme }) => theme.typography.variants.button.md.weight};
