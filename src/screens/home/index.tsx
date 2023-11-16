@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "@/components/Header";
-import { Main } from "./style";
 import Text from "@/patterns/Text";
 import Box from "@/patterns/Box";
 import Image from "@/patterns/Image";
@@ -9,7 +8,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <Main>
+      <Box as="main">
         <Box>
           <Text
             variant="display_01"
@@ -28,7 +27,7 @@ export default function Home() {
             projects, goals...
           </Text>
         </Box>
-      </Main>
+      </Box>
     </>
   );
 }

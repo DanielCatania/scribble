@@ -15,14 +15,6 @@ const Image = styled.img.withConfig({
       props
     ),
 })<ImageProps>`
-  ${({ inlineStyle }) => inlineStyle?.xs}
-  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
-    ${({ inlineStyle }) => inlineStyle?.md}
-  }
-  @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
-    ${({ inlineStyle }) => inlineStyle?.lg}
-  }
-
   width: ${({ width }) => width?.xs};
   height: ${({ height }) => height?.xs};
   max-width: ${({ maxWidth }) => maxWidth?.xs};
@@ -40,6 +32,14 @@ const Image = styled.img.withConfig({
     height: ${({ height }) => height?.lg};
     max-width: ${({ maxWidth }) => maxWidth?.lg};
     max-height: ${({ maxHeight }) => maxHeight?.lg};
+  }
+
+  ${({ inlineStyle }) => inlineStyle?.xs}
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
+    ${({ inlineStyle }) => inlineStyle?.md}
+  }
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
+    ${({ inlineStyle }) => inlineStyle?.lg}
   }
 `;
 

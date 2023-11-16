@@ -1,15 +1,16 @@
 import styled from "styled-components";
-import { color } from "@/type";
+import { breakpoints, color } from "@/type";
 
 export interface ButtonProps {
   background?: color;
   color?: color;
   size?: "default" | "large";
+  inlineStyle?: breakpoints<string>;
 }
 
 const Button = styled.button.withConfig({
   shouldForwardProp: (props) =>
-    !["background", "color", "size"].includes(props),
+    !["background", "color", "size", "inlineStyle"].includes(props),
 })<ButtonProps>`
   width: ${({ size = "default" }) => (size === "default" ? "80px" : "120px")};
   height: 40px;
@@ -35,6 +36,14 @@ const Button = styled.button.withConfig({
 
     font-size: ${({ theme }) => theme.typography.variants.button.md.size};
     font-weight: ${({ theme }) => theme.typography.variants.button.md.weight};
+  }
+
+  ${({ inlineStyle }) => inlineStyle?.xs}
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
+    ${({ inlineStyle }) => inlineStyle?.md}
+  }
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
+    ${({ inlineStyle }) => inlineStyle?.lg}
   }
 `;
 

@@ -11,14 +11,6 @@ const Text = styled.p.withConfig({
   shouldForwardProp: (props) =>
     !["variant", "color", "inlineStyle"].includes(props),
 })<TextProps>`
-  ${({ inlineStyle }) => inlineStyle?.xs}
-  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
-    ${({ inlineStyle }) => inlineStyle?.md}
-  }
-  @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
-    ${({ inlineStyle }) => inlineStyle?.lg}
-  }
-
   color: ${({ theme, color = { palette: "neutral", tone: "250" } }) =>
     theme.colors[color.palette][color.tone]};
 
@@ -42,6 +34,14 @@ const Text = styled.p.withConfig({
       theme.typography.variants[variant]["lg"]?.size};
     font-weight: ${({ theme, variant = "body_01" }) =>
       theme.typography.variants[variant]["lg"]?.weight};
+  }
+
+  ${({ inlineStyle }) => inlineStyle?.xs}
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
+    ${({ inlineStyle }) => inlineStyle?.md}
+  }
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
+    ${({ inlineStyle }) => inlineStyle?.lg}
   }
 `;
 
