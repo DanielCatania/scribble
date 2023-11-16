@@ -1,11 +1,11 @@
 import { breakpoints } from "@/type";
 import styled from "styled-components";
 
-interface BoxProps {
+interface SectionProps {
   inlineStyle?: breakpoints<string>;
 }
 
-const Box = styled.section<BoxProps>`
+const Section = styled.section<SectionProps>`
   display: flex;
 
   justify-content: space-between;
@@ -24,4 +24,4 @@ const Box = styled.section<BoxProps>`
   }
 `;
 
-export default Box;
+export default Section;

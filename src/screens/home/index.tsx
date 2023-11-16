@@ -1,15 +1,15 @@
 import React from "react";
 import Header from "@/components/Header";
 import Text from "@/patterns/Text";
-import Box from "@/patterns/Box";
+import Section from "@/patterns/Section";
 import Image from "@/patterns/Image";
 
 export default function Home() {
   return (
     <>
       <Header />
-      <Box as="main">
-        <Box>
+      <Section as="main">
+        <Section>
           <Text
             variant="display_01"
             as="h1"
@@ -26,8 +26,8 @@ export default function Home() {
             Our mission is to facilitate your notes, help you organize your
             projects, goals...
           </Text>
-        </Box>
-      </Box>
+        </Section>
+      </Section>
     </>
   );
 }
