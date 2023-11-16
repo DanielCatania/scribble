@@ -1,14 +1,24 @@
 import styled from "styled-components";
-import { color } from "@/type";
+import { breakpoints, color } from "@/type";
 
 interface TextProps {
   variant?: "display_01" | "heading_01" | "heading_02" | "body_01" | "body_02";
   color?: color;
+  inlineStyle?: breakpoints<string>;
 }
 
 const Text = styled.p.withConfig({
-  shouldForwardProp: (props) => !["variant", "color"].includes(props),
+  shouldForwardProp: (props) =>
+    !["variant", "color", "inlineStyle"].includes(props),
 })<TextProps>`
+  ${({ inlineStyle }) => inlineStyle?.xs}
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
+    ${({ inlineStyle }) => inlineStyle?.md}
+  }
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
+    ${({ inlineStyle }) => inlineStyle?.lg}
+  }
+
   color: ${({ theme, color = { palette: "neutral", tone: "250" } }) =>
     theme.colors[color.palette][color.tone]};
 
