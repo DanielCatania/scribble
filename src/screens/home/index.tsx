@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "@/components/Header";
+import Header from "./components/Header";
 import Text from "@/patterns/Text";
 import Section from "@/patterns/Section";
 import Image from "@/patterns/Image";

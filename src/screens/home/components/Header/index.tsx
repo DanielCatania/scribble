@@ -1,13 +1,19 @@
 import React from "react";
-import { Box, Nav } from "./style";
 import Link from "@/patterns/Link";
-import Logo from "./patterns/Logo";
+import Box from "@/patterns/Box";
+import Logo from "@/components/Logo";
 
 export default function Header() {
   return (
-    <Box>
+    <Box
+      inlineStyle={{
+        xs: `margin: 0.5em 0.75em;`,
+        md: `margin: 0 2em;`,
+      }}
+      as="header"
+    >
       <Logo />
-      <Nav>
+      <Box as="nav" inlineStyle={{ xs: `gap: 0.5em;`, md: `gap: 2em;` }}>
         <Link
           style={{ background: { palette: "secondary", tone: "100" } }}
           href="/login"
@@ -15,7 +21,7 @@ export default function Header() {
           Login
         </Link>
         <Link href="/sign-up">Sign Up</Link>
-      </Nav>
+      </Box>
     </Box>
   );
 }
