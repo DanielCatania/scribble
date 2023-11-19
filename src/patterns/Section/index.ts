@@ -1,11 +1,13 @@
-import { breakpoints } from "@/type";
 import styled from "styled-components";
+import { breakpoints } from "@/type";
 
 interface SectionProps {
   inlineStyle?: breakpoints<string>;
 }
 
-const Section = styled.section<SectionProps>`
+const Section = styled.section.withConfig({
+  shouldForwardProp: (props) => !["inlineStyle"].includes(props),
+})<SectionProps>`
   display: flex;
 
   justify-content: space-between;
