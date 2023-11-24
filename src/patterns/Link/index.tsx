@@ -1,16 +1,32 @@
 import React from "react";
+import { useRouter } from "next/router";
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
-import Button, { ButtonProps } from "../Button";
 
-interface LinkProps extends NextLinkProps {
+export interface LinkProps extends NextLinkProps {
   children?: React.ReactNode;
-  style?: ButtonProps;
+  internal?: boolean;
 }
 
-export default function Link({ children, style, ...props }: LinkProps) {
+export default function Link({
+  children,
+  internal = true,
+  href,
+  ...props
+}: LinkProps) {
+  if (internal) {
+    const { query } = useRouter();
+
+    const { idiom } = query;
+    return (
+      <NextLink href={`/${idiom}/${href}`} {...props}>
+        {children}
+      </NextLink>
+    );
+  }
+
   return (
-    <NextLink {...props}>
-      <Button {...style}>{children}</Button>
+    <NextLink href={href} {...props}>
+      {children}
     </NextLink>
   );
 }
