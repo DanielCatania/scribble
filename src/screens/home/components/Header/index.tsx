@@ -1,9 +1,16 @@
 import React from "react";
-import Link from "@/patterns/Link";
+import LinkButton from "@/patterns/LinkButton";
 import Box from "@/patterns/Box";
 import Logo from "@/components/Logo";
 
-export default function Header() {
+interface HeaderProps {
+  content: {
+    login: string;
+    signUp: string;
+  };
+}
+
+export default function Header({ content }: HeaderProps) {
   return (
     <Box
       inlineStyle={{
@@ -14,13 +21,13 @@ export default function Header() {
     >
       <Logo />
       <Box as="nav" inlineStyle={{ xs: `gap: 0.5em;`, md: `gap: 2em;` }}>
-        <Link
+        <LinkButton
           style={{ background: { palette: "secondary", tone: "100" } }}
-          href="/login"
+          href="login"
         >
-          Login
-        </Link>
-        <Link href="/sign-up">Sign Up</Link>
+          {content.login}
+        </LinkButton>
+        <LinkButton href="sign-up">{content.signUp}</LinkButton>
       </Box>
     </Box>
   );

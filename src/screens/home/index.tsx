@@ -4,12 +4,18 @@ import Text from "@/patterns/Text";
 import Section from "@/patterns/Section";
 import Image from "@/patterns/Image";
 import Box from "@/patterns/Box";
-import Link from "@/patterns/Link";
+import LinkButton from "@/patterns/LinkButton";
+import { PageContent } from "@/pages/[idiom]";
 
-export default function Home() {
+interface Props {
+  pageProps: { content: PageContent };
+}
+
+export default function Home({ pageProps }: Props) {
+  const { content } = pageProps;
   return (
     <>
-      <Header />
+      <Header content={content.header} />
       <Section as="main" inlineStyle={{ xs: `margin: 0;` }}>
         <Image
           src="/img/notes-xs.png"
@@ -22,7 +28,7 @@ export default function Home() {
             as="h1"
             inlineStyle={{ md: `max-width: calc(100% - 150px);` }}
           >
-            Scribble is an enabler.
+            {content.title}
           </Text>
           <Image
             src="/img/pen.svg"
@@ -30,8 +36,7 @@ export default function Home() {
             inlineStyle={{ xs: `order: 2;`, md: "order: 0;" }}
           />
           <Text inlineStyle={{ xs: `max-width: 70%;`, md: `max-width: none;` }}>
-            Our mission is to facilitate your notes, help you organize your
-            projects, goals...
+            {content.description}
           </Text>
         </Section>
         <Section inlineStyle={{ xs: `width: calc(100% - 100px);` }}>
@@ -46,12 +51,10 @@ export default function Home() {
               lg: `max-width: 450px;`,
             }}
           >
-            <Text variant="heading_02">
-              Try the most diverse functions for your organization.
-            </Text>
-            <Link href="/sign-up" style={{ size: "large" }}>
-              Use Scribble
-            </Link>
+            <Text variant="heading_02">{content.call}</Text>
+            <LinkButton href="sign-up" style={{ size: "large" }}>
+              {content.buttonCall}
+            </LinkButton>
           </Box>
           <Image
             src="/img/notes-md.png"
