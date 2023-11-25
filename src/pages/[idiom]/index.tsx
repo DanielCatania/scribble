@@ -1,4 +1,4 @@
-import type { GetServerSideProps } from "next";
+import type { GetStaticPaths, GetStaticProps } from "next";
 
 export interface PageContent {
   header: {
@@ -37,21 +37,31 @@ const content = {
   },
 };
 
-export const getServerSideProps = (async (ctx) => {
+export const getStaticPaths = (async () => {
+  return {
+    paths: [
+      {
+        params: {
+          idiom: "en",
+        },
+      },
+      {
+        params: {
+          idiom: "pt-br",
+        },
+      },
+    ],
+    fallback: false,
+  };
+}) satisfies GetStaticPaths;
+
+export const getStaticProps = (async (ctx) => {
   const { idiom } = ctx.params;
 
   if (idiom === "pt-br" || idiom === "en") {
     return { props: { content: content[idiom] } };
-  } else {
-    return {
-      props: {},
-      redirect: {
-        permanent: false,
-        destination: "/",
-      },
-    };
   }
-}) satisfies GetServerSideProps<{
+}) satisfies GetStaticProps<{
   content: PageContent;
 }>;
 
