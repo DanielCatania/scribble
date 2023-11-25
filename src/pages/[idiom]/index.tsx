@@ -29,9 +29,9 @@ const content = {
       login: "Entrar",
       signUp: "Criar",
     },
-    title: "Scribble é um facilitador.",
+    title: "Scribble é um auxiliar.",
     description:
-      "Nossa missão é facilitar suas anotações, te ajudar a organizar seus projetos, metas...",
+      "Nossa missão é auxiliar suas anotações, te ajudar a organizar seus projetos, metas...",
     call: "Experimente as mais diversas funções para sua organização.",
     buttonCall: "Usar Scribble",
   },
