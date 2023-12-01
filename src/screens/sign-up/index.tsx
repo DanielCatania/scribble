@@ -27,7 +27,11 @@ export default function SignUpScreen({ pageProps }) {
         inlineStyle={{ xs: `margin: 0; justify-content: center;` }}
       >
         <Box inlineStyle={{ xs: `flex-direction: column; gap: 2em;` }}>
-          <Text variant="display_01" as="h1">
+          <Text
+            variant="display_01"
+            as="h1"
+            inlineStyle={{ xs: `text-align: center;` }}
+          >
             {content.pageName}
           </Text>
           <Box

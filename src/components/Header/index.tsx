@@ -7,7 +7,7 @@ export default function Header() {
     <Box
       as="header"
       inlineStyle={{
-        xs: `padding: 0 1em;`,
+        xs: `padding: 0.5em 1em;`,
         md: `padding: 0 2em;`,
       }}
     >
