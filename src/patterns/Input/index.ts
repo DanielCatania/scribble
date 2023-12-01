@@ -1,6 +1,13 @@
 import styled from "styled-components";
+import { breakpoints } from "@/type";
 
-const Input = styled.input`
+interface InputProps {
+  inlineStyle?: breakpoints<string>;
+}
+
+const Input = styled.input.withConfig({
+  shouldForwardProp: (props) => !["inlineStyle"].includes(props),
+})<InputProps>`
   width: 240px;
   height: 60px;
 
@@ -11,6 +18,14 @@ const Input = styled.input`
   font-family: ${({ theme }) => theme.typography.variants.button.family};
   font-size: ${({ theme }) => theme.typography.variants.button.md.size};
   font-weight: ${({ theme }) => theme.typography.variants.button.md.weight};
+
+  ${({ inlineStyle }) => inlineStyle?.xs}
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
+    ${({ inlineStyle }) => inlineStyle?.md}
+  }
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
+    ${({ inlineStyle }) => inlineStyle?.lg}
+  }
 `;
 
 export default Input;
