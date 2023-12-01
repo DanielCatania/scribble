@@ -16,8 +16,6 @@ export default function PasswordInput({ state, ...props }: PasswordInputProps) {
   const [value, setValue] = state;
   const [visible, setVisible] = useState(false);
 
-  console.log(visible);
-
   return (
     <Box inlineStyle={{ xs: `position: relative;` }}>
       <Input
