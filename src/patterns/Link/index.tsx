@@ -1,8 +1,9 @@
 import React from "react";
 import { useRouter } from "next/router";
-import NextLink, { LinkProps as NextLinkProps } from "next/link";
+import { LinkProps as NextLinkProps } from "next/link";
+import { LinkStyle, LinkStyleProps, NextLinkStyle } from "./style";
 
-export interface LinkProps extends NextLinkProps {
+export interface LinkProps extends NextLinkProps, LinkStyleProps {
   children?: React.ReactNode;
   rel?: "external" | string;
 }
@@ -13,15 +14,15 @@ export default function Link({ children, href, rel, ...props }: LinkProps) {
 
     const { idiom } = query;
     return (
-      <NextLink href={`/${idiom}${href}`} rel={rel} {...props}>
+      <NextLinkStyle href={`/${idiom}${href}`} rel={rel} {...props}>
         {children}
-      </NextLink>
+      </NextLinkStyle>
     );
   }
 
   return (
-    <a href={href.toString()} rel={rel} target="_blank" {...props}>
+    <LinkStyle href={href.toString()} rel={rel} target="_blank" {...props}>
       {children}
-    </a>
+    </LinkStyle>
   );
 }
