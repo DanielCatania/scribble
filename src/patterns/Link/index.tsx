@@ -4,29 +4,24 @@ import NextLink, { LinkProps as NextLinkProps } from "next/link";
 
 export interface LinkProps extends NextLinkProps {
   children?: React.ReactNode;
-  internal?: boolean;
+  rel?: "external" | string;
 }
 
-export default function Link({
-  children,
-  internal = true,
-  href,
-  ...props
-}: LinkProps) {
-  if (internal) {
+export default function Link({ children, href, rel, ...props }: LinkProps) {
+  if (rel !== "external") {
     const { query } = useRouter();
 
     const { idiom } = query;
     return (
-      <NextLink href={`/${idiom}/${href}`} {...props}>
+      <NextLink href={`/${idiom}${href}`} rel={rel} {...props}>
         {children}
       </NextLink>
     );
   }
 
   return (
-    <NextLink href={href} {...props}>
+    <a href={href.toString()} rel={rel} target="_blank" {...props}>
       {children}
-    </NextLink>
+    </a>
   );
 }

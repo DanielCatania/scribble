@@ -22,12 +22,12 @@ export default function Header({ content }: HeaderProps) {
       <Logo />
       <Box as="nav" inlineStyle={{ xs: `gap: 0.5em;`, md: `gap: 2em;` }}>
         <LinkButton
-          style={{ background: { palette: "secondary", tone: "100" } }}
-          href="login"
+          background={{ palette: "secondary", tone: "100" }}
+          href="/login"
         >
           {content.login}
         </LinkButton>
-        <LinkButton href="sign-up">{content.signUp}</LinkButton>
+        <LinkButton href="/sign-up">{content.signUp}</LinkButton>
       </Box>
     </Box>
   );

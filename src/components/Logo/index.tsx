@@ -4,7 +4,7 @@ import Link from "@/patterns/Link";
 
 export default function Logo() {
   return (
-    <Link href="">
+    <Link href="/">
       <Image
         src="/img/logo.svg"
         alt="Scribble"

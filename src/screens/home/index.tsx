@@ -6,6 +6,7 @@ import Image from "@/patterns/Image";
 import Box from "@/patterns/Box";
 import LinkButton from "@/patterns/LinkButton";
 import { PageContent } from "@/pages/[idiom]";
+import Link from "@/patterns/Link";
 
 interface Props {
   pageProps: { content: PageContent };
@@ -52,7 +53,7 @@ export default function Home({ pageProps }: Props) {
             }}
           >
             <Text variant="heading_02">{content.call}</Text>
-            <LinkButton href="sign-up" style={{ size: "large" }}>
+            <LinkButton href="sign-up" size="large">
               {content.buttonCall}
             </LinkButton>
           </Box>
