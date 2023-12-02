@@ -1,9 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { LinkProps as NextLinkProps } from "next/link";
-import { LinkStyle, LinkStyleProps, NextLinkStyle } from "./style";
+import { LinkStyle, NextLinkStyle } from "./style";
+import { PatternProps } from "@/type";
 
-export interface LinkProps extends NextLinkProps, LinkStyleProps {
+export interface LinkProps extends NextLinkProps, PatternProps {
   children?: React.ReactNode;
   rel?: "external" | string;
 }

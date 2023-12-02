@@ -1,13 +1,9 @@
 import styled from "styled-components";
-import { breakpoints } from "@/type";
-
-interface BoxProps {
-  inlineStyle?: breakpoints<string>;
-}
+import { PatternProps } from "@/type";
 
 const Box = styled.div.withConfig({
   shouldForwardProp: (props) => !["inlineStyle"].includes(props),
-})<BoxProps>`
+})<PatternProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -1,14 +1,10 @@
 import styled from "styled-components";
 import NextLink from "next/link";
-import { breakpoints } from "@/type";
-
-export interface LinkStyleProps {
-  inlineStyle?: breakpoints<string>;
-}
+import { PatternProps } from "@/type";
 
 export const LinkStyle = styled.a.withConfig({
   shouldForwardProp: (props) => !["inlineStyle"].includes(props),
-})<LinkStyleProps>`
+})<PatternProps>`
   ${({ inlineStyle }) => inlineStyle?.xs}
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
     ${({ inlineStyle }) => inlineStyle?.md}
@@ -20,7 +16,7 @@ export const LinkStyle = styled.a.withConfig({
 
 export const NextLinkStyle = styled(NextLink).withConfig({
   shouldForwardProp: (props) => !["inlineStyle"].includes(props),
-})<LinkStyleProps>`
+})<PatternProps>`
   ${({ inlineStyle }) => inlineStyle?.xs}
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
     ${({ inlineStyle }) => inlineStyle?.md}

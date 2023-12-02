@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { breakpoints, color } from "@/type";
+import { PatternProps, color } from "@/type";
 
-interface TextProps {
+interface TextProps extends PatternProps {
   variant?: "display_01" | "heading_01" | "heading_02" | "body_01" | "body_02";
   color?: color;
-  inlineStyle?: breakpoints<string>;
 }
 
 const Text = styled.p.withConfig({
@@ -22,25 +21,21 @@ const Text = styled.p.withConfig({
   font-weight: ${({ theme, variant = "body_01" }) =>
     theme.typography.variants[variant]["xs"].weight};
 
+  ${({ inlineStyle }) => inlineStyle?.xs}
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
     font-size: ${({ theme, variant = "body_01" }) =>
       theme.typography.variants[variant]["md"]?.size};
     font-weight: ${({ theme, variant = "body_01" }) =>
       theme.typography.variants[variant]["md"]?.weight};
-  }
 
+    ${({ inlineStyle }) => inlineStyle?.md}
+  }
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
     font-size: ${({ theme, variant = "body_01" }) =>
       theme.typography.variants[variant]["lg"]?.size};
     font-weight: ${({ theme, variant = "body_01" }) =>
       theme.typography.variants[variant]["lg"]?.weight};
-  }
 
-  ${({ inlineStyle }) => inlineStyle?.xs}
-  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
-    ${({ inlineStyle }) => inlineStyle?.md}
-  }
-  @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
     ${({ inlineStyle }) => inlineStyle?.lg}
   }
 `;

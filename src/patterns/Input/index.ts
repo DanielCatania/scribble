@@ -1,13 +1,9 @@
 import styled from "styled-components";
-import { breakpoints } from "@/type";
-
-interface InputProps {
-  inlineStyle?: breakpoints<string>;
-}
+import { PatternProps } from "@/type";
 
 const Input = styled.input.withConfig({
   shouldForwardProp: (props) => !["inlineStyle"].includes(props),
-})<InputProps>`
+})<PatternProps>`
   width: 240px;
   height: 60px;
 

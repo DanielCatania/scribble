@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import { breakpoints, color } from "@/type";
+import { PatternProps, color } from "@/type";
 
-export interface ButtonProps {
+export interface ButtonProps extends PatternProps {
   background?: color;
   color?: color;
   size?: "default" | "large";
-  inlineStyle?: breakpoints<string>;
 }
 
 const Button = styled.button.withConfig({
@@ -29,6 +28,7 @@ const Button = styled.button.withConfig({
     background = { palette: "primary", tone: "100" },
   }) => theme.colors[background.palette][background.tone]};
 
+  ${({ inlineStyle }) => inlineStyle?.xs}
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
     width: ${({ size = "default" }) =>
       size === "default" ? "100px" : "150px"};
@@ -36,10 +36,7 @@ const Button = styled.button.withConfig({
 
     font-size: ${({ theme }) => theme.typography.variants.button.md.size};
     font-weight: ${({ theme }) => theme.typography.variants.button.md.weight};
-  }
 
-  ${({ inlineStyle }) => inlineStyle?.xs}
-  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
     ${({ inlineStyle }) => inlineStyle?.md}
   }
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {

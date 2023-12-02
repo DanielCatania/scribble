@@ -8,3 +8,7 @@ export type breakpoints<Type> = {
   md?: Type;
   lg?: Type;
 };
+
+export interface PatternProps {
+  inlineStyle?: breakpoints<string>;
+}
