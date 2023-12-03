@@ -6,7 +6,7 @@ import Box from "@/patterns/Box";
 import Text from "@/patterns/Text";
 import Input from "@/patterns/Input";
 import PasswordInput from "@/patterns/Input/PasswordInput";
-import Button from "@/patterns/Button";
+import FullButton from "@/patterns/Button/FullButton";
 
 export default function SignUpScreen({ pageProps }) {
   const { content } = pageProps;
@@ -63,7 +63,7 @@ export default function SignUpScreen({ pageProps }) {
               state={confirmState}
               placeholder={content.fields.confirm}
             />
-            <Button
+            <FullButton
               onClick={(e) => {
                 e.preventDefault();
 
@@ -78,7 +78,7 @@ export default function SignUpScreen({ pageProps }) {
               size="large"
             >
               {content.pageName}
-            </Button>
+            </FullButton>
           </Box>
         </Box>
       </Section>

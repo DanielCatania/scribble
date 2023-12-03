@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Box from "@/patterns/Box";
 import Input from "@/patterns/Input";
 import Image from "@/patterns/Image";
-import Button from "./components/Button";
+import Button from "@/patterns/Button";
 
 interface PasswordInputProps
   extends React.DetailedHTMLProps<
@@ -25,7 +25,18 @@ export default function PasswordInput({ state, ...props }: PasswordInputProps) {
         value={value}
         {...props}
       />
-      <Button onClick={() => setVisible(!visible)} type="button">
+      <Button
+        width={{ xs: "20px" }}
+        height={{ xs: "20px" }}
+        inlineStyle={{
+          xs: `
+          position: absolute;
+          right: 10px;
+        `,
+        }}
+        onClick={() => setVisible(!visible)}
+        type="button"
+      >
         <Image
           src={`/img/password/${visible ? "view" : "hide"}.png`}
           width={{ xs: "20px" }}

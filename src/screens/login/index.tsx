@@ -4,10 +4,10 @@ import Section from "@/patterns/Section";
 import Text from "@/patterns/Text";
 import Box from "@/patterns/Box";
 import Input from "@/patterns/Input";
-import Button from "@/patterns/Button";
 
 import PasswordInput from "@/patterns/Input/PasswordInput";
 import Header from "@/components/Header";
+import FullButton from "@/patterns/Button/FullButton";
 
 export default function LoginScreen({ pageProps }) {
   const { content } = pageProps;
@@ -45,7 +45,7 @@ export default function LoginScreen({ pageProps }) {
               state={passwordState}
               placeholder={content.fields.password}
             />
-            <Button
+            <FullButton
               onClick={(e) => {
                 e.preventDefault();
 
@@ -58,7 +58,7 @@ export default function LoginScreen({ pageProps }) {
               size="large"
             >
               {content.pageName}
-            </Button>
+            </FullButton>
           </Box>
         </Box>
       </Section>

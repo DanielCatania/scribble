@@ -1,8 +1,8 @@
 import React from "react";
-import Button, { ButtonProps } from "../Button";
+import Button, { FullButtonProps } from "../Button/FullButton";
 import Link, { LinkProps } from "../Link";
 
-interface LinkButtonProps extends LinkProps, ButtonProps {}
+interface LinkButtonProps extends LinkProps, FullButtonProps {}
 
 export default function LinkButton({
   children,

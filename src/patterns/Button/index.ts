@@ -1,19 +1,19 @@
 import styled from "styled-components";
-import { PatternProps, color } from "@/type";
+import { PatternProps, breakpoints, color } from "@/type";
 
 export interface ButtonProps extends PatternProps {
-  background?: color;
+  background?: color | "transparent";
   color?: color;
-  size?: "default" | "large";
+  width?: breakpoints<string>;
+  height?: breakpoints<string>;
 }
 
 const Button = styled.button.withConfig({
   shouldForwardProp: (props) =>
-    !["background", "color", "size", "inlineStyle"].includes(props),
+    !["background", "color", "width", "height", "inlineStyle"].includes(props),
 })<ButtonProps>`
-  width: ${({ size = "default" }) => (size === "default" ? "70px" : "120px")};
-  height: 40px;
-  border-radius: 15px;
+  width: ${({ width }) => width?.xs};
+  height: ${({ height }) => height?.xs};
 
   cursor: pointer;
 
@@ -23,16 +23,15 @@ const Button = styled.button.withConfig({
 
   color: ${({ theme, color = { palette: "neutral", tone: "050" } }) =>
     theme.colors[color.palette][color.tone]};
-  background-color: ${({
-    theme,
-    background = { palette: "primary", tone: "100" },
-  }) => theme.colors[background.palette][background.tone]};
+  background-color: ${({ theme, background = "transparent" }) =>
+    background !== "transparent"
+      ? theme.colors[background.palette][background.tone]
+      : background};
 
   ${({ inlineStyle }) => inlineStyle?.xs}
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
-    width: ${({ size = "default" }) =>
-      size === "default" ? "100px" : "150px"};
-    height: 50px;
+    width: ${({ width }) => width?.md};
+    height: ${({ height }) => height?.md};
 
     font-size: ${({ theme }) => theme.typography.variants.button.md.size};
     font-weight: ${({ theme }) => theme.typography.variants.button.md.weight};
@@ -40,6 +39,9 @@ const Button = styled.button.withConfig({
     ${({ inlineStyle }) => inlineStyle?.md}
   }
   @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
+    height: ${({ height }) => height?.lg};
+    width: ${({ width }) => width?.lg};
+
     ${({ inlineStyle }) => inlineStyle?.lg}
   }
 `;
