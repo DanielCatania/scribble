@@ -53,7 +53,7 @@ export default function Home({ pageProps }: Props) {
             }}
           >
             <Text variant="heading_02">{content.call}</Text>
-            <LinkButton href="sign-up" size="large">
+            <LinkButton href="/sign-up" size="large">
               {content.buttonCall}
             </LinkButton>
           </Box>
