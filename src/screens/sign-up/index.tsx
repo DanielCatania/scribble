@@ -5,7 +5,7 @@ import Section from "@/patterns/Section";
 import Box from "@/patterns/Box";
 import Text from "@/patterns/Text";
 import Input from "@/patterns/Input";
-import PasswordInput from "@/components/PasswordInput";
+import PasswordInput from "@/patterns/Input/PasswordInput";
 import Button from "@/patterns/Button";
 
 export default function SignUpScreen({ pageProps }) {

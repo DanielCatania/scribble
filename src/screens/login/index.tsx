@@ -6,7 +6,7 @@ import Box from "@/patterns/Box";
 import Input from "@/patterns/Input";
 import Button from "@/patterns/Button";
 
-import PasswordInput from "@/components/PasswordInput";
+import PasswordInput from "@/patterns/Input/PasswordInput";
 import Header from "@/components/Header";
 
 export default function LoginScreen({ pageProps }) {
