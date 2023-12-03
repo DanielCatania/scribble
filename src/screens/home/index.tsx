@@ -1,12 +1,13 @@
 import React from "react";
-import Header from "./components/Header";
+
 import Text from "@/patterns/Text";
 import Section from "@/patterns/Section";
 import Image from "@/patterns/Image";
 import Box from "@/patterns/Box";
 import LinkButton from "@/patterns/LinkButton";
+
 import { PageContent } from "@/pages/[idiom]";
-import Link from "@/patterns/Link";
+import Header from "@/components/Header";
 
 interface Props {
   pageProps: { content: PageContent };
@@ -16,7 +17,7 @@ export default function Home({ pageProps }: Props) {
   const { content } = pageProps;
   return (
     <>
-      <Header content={content.header} />
+      <Header.RegistrationOptions links={content.header} />
       <Section as="main" inlineStyle={{ xs: `margin: 0;` }}>
         <Image
           src="/img/notes-xs.png"

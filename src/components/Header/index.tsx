@@ -1,8 +1,13 @@
 import React from "react";
 import Box from "@/patterns/Box";
-import Logo from "../Logo";
+import Logo from "./components/Logo";
+import LinkButton from "@/patterns/LinkButton";
 
-export default function Header() {
+interface HeaderProps {
+  children?: React.ReactNode;
+}
+
+export default function Header({ children }: HeaderProps) {
   return (
     <Box
       as="header"
@@ -12,6 +17,30 @@ export default function Header() {
       }}
     >
       <Logo />
+      {children}
     </Box>
   );
 }
+
+interface RegistrationOptionsProps {
+  links: {
+    login: string;
+    signUp: string;
+  };
+}
+
+Header.RegistrationOptions = ({ links }: RegistrationOptionsProps) => {
+  return (
+    <Header>
+      <Box as="nav" inlineStyle={{ xs: `gap: 0.5em;`, md: `gap: 2em;` }}>
+        <LinkButton
+          background={{ palette: "secondary", tone: "100" }}
+          href="/login"
+        >
+          {links.login}
+        </LinkButton>
+        <LinkButton href="/sign-up">{links.signUp}</LinkButton>
+      </Box>
+    </Header>
+  );
+};
