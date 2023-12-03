@@ -14,9 +14,8 @@
   "scripts": {
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start",
-    "build": "next build",
-    "run": "yarn build && yarn start"
+    "start": "yarn build && yarn start",
+    "commit": "cz"
   },
   "devDependencies": {
     "@types/node": "^20.8.2",
