@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: "18"
       - run: yarn install
-      - run: yarn build-storybook
+      - run: yarn build:docs
       - run: git add .
       - run: git config --global user.email $USER_EMAIL
       - run: git config --global user.name $USER_NAME
