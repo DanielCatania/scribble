@@ -1,0 +1,39 @@
+{
+  "Create a stories file": {
+    "prefix": "stories",
+    "body": [
+      "import Component from '.';",
+      "import type { Meta, StoryObj } from '@storybook/react';",
+      "",
+      "const meta = {",
+      "title: 'Name',",
+      "component: Component,",
+      "} satisfies Meta<typeof Component>;",
+      "",
+      "type Story = StoryObj<typeof meta>;",
+      "",
+      "export const Default: Story = {};",
+      "",
+      "export default meta;"
+    ],
+    "description": "Create a stories file"
+  },
+  "Create a doc file": {
+    "prefix": "doc",
+    "body": [
+      "import { Canvas, Meta } from '@storybook/blocks';",
+      "",
+      "import * as Stories from './Story.stories.tsx';",
+      "",
+      "<Meta of={Stories} />",
+      "",
+      "# Title",
+      "",
+      "Description...",
+      "",
+      "<Canvas of={Stories.Default} />",
+      ""
+    ],
+    "description": "Create a doc file"
+  }
+}
