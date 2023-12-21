@@ -1,7 +1,159 @@
 import { Meta } from "@storybook/blocks";
 
+import ImageWithOptions from "../static/img/Intro/commitizen/image-with-options.jpg";
+import ImageScope from "../static/img/Intro/commitizen/scope.jpg";
+import ImageName from "../static/img/Intro/commitizen/name.jpg";
+import ImageDescription from "../static/img/Intro/commitizen/description.jpg";
+import ImageBreakingChange from "../static/img/Intro/commitizen/breaking-changes.jpg";
+import ImageIssue from "../static/img/Intro/commitizen/issue.jpg";
+
 <Meta title="Intro/Welcome" />
 
 # Welcome to Scribble documentation
 
 In this documentation, you find about: installation, structure and components.
+
+## Index
+  * [Install](#install)
+  * [Structure](#structure)    
+  * [Commitizen](#commitizen)
+
+## Install
+
+### Prerequisites
+
+Make sure you have git, yarn and node installed
+
+### Steps
+
+1. Clone the repository project
+
+```
+  git clone https://github.com/DanielCatania/scribble.git
+```
+
+2. Access the project folder
+
+```
+  cd scribble
+```
+
+3. Install dependencies
+
+```
+  yarn install
+```
+
+4. Execute the project
+
+```
+  yarn dev
+```
+
+## Structure
+
+Understand the project structure below:
+
+### Index
+  * [📁 Public Folder](#-public-folder)
+  * [📁 Src Folder](#-src-folder)
+    + [→ 📁 Pages Folder](#--pages-folder)
+    + [→ 📁 Screens Folder](#--screens-folder)
+    + [→ 📁 Style Folder](#--style-folder)
+    + [→ 📁 Type Folder](#--type-folder)
+    + [→ 📁 Stories Folder](#--stories-folder)
+    + [→ 📁 Patterns Folder](#--patterns-folder)
+    + [→ 📁 Components Folder](#--components-folder)
+  * [📁 .storybook Folder](#-storybook-folder)
+  * [🗎 .editorconfig File](#-editorconfig-file)
+  * [🗎 next.config.js File](#-nextconfigjs-file)
+  * [🗎 next-env.d.ts File](#-next-envdts-file)
+
+### 📁 Public Folder
+
+Store static assets, such images, fonts, etc.
+
+### 📁 Src Folder
+
+Hold all the application code, this separates the other codes, such as configuration and documentation, which are at the root.
+
+#### → 📁 Pages Folder
+
+Folder that manages application routing, the Next JS uses every file as a route.
+
+#### → 📁 Screens Folder
+
+Hold codes related to the layout of the screens, with each folder being a screen.
+
+#### → 📁 Style Folder
+
+Hold the style codes, such global style and theme.
+
+#### → 📁 Type Folder
+
+Hold global types of the project.
+
+#### → 📁 Stories Folder
+
+Hold storybook files, global documentation files.
+
+
+#### → 📁 Patterns Folder
+
+Hold patterns, view what are patterns in patterns section.
+
+#### → 📁 Components Folder
+
+Hold components, view the difference between patterns and components in patterns section.
+
+
+### 📁 .storybook Folder
+
+Storybook folder, hold config storybook files.
+
+### 🗎 .editorconfig File
+
+Standardization file for editor configuration.
+
+### 🗎 next.config.js File
+
+Next JS Settings File.
+
+### 🗎 next-env.d.ts File
+
+File that inserts Next JS types into the Typescript compiler.
+
+## Commitizen
+
+For make better project organization we use the commitizen, a tool of terminal that standardize commits
+
+### Use mode
+
+1. In the terminal use the command:
+
+```
+  yarn commit
+```
+
+2. Select the option that best fit your commit
+
+<img src={ImageWithOptions.src} alt="Example of Options" />
+
+3. Write the commit scope
+
+<img src={ImageScope.src} alt="Scope Message Example" />
+
+4. Write the commit name
+
+<img src={ImageName.src} alt="Write Name Message Example" />
+
+5. Write the commit description
+
+<img src={ImageDescription.src} alt="Write Description Message Example" />
+
+6. Select whether there was a breaking change or an issue resolution
+
+<img src={ImageBreakingChange.src} alt="Breaking Change Message Example" />
+<img src={ImageIssue.src} alt="Issue Message Example" />
+
+Ready! Commit successfully performed using Commitizen!

@@ -1,16 +1,16 @@
 import { Meta } from '@storybook/blocks';
 
-<Meta title="Patterns/What are Patterns?" />
+<Meta title="Intro/What are patterns?" />
 
 # Patterns
 
 ## Index
 - [What are Patterns?](#what-are-patterns)
-- [Which the difference between components and patterns?](#which-the-difference-between-components-and-patterns)
+- [What is the difference between components and patterns?](#what-is-the-difference-between-components-and-patterns)
 - [The 'inlineStyle' Prop](#the-inlinestyle-prop)
 - [How to build patterns?](#how-to-build-patterns)
 
-## What are Patterns?
+## What are patterns?
 
 Patterns are pieces to build structures (sections, pages, etc). These are highly customizable, especially with regards to style components, all of which display the 'inlineStyle' prop, enabling more comprehensive styling based on breakpoints and do not present own content.
 
@@ -23,7 +23,7 @@ The flexibility of 'inlineStyle' offers an efficient way to deal with design qui
 
 Components are structures, such as header, footer, etc. They are less customizable than patterns, having few customizations, such as language and variables, and already present own content.
 
-## The 'inlineStyle' Prop
+## The 'inlineStyle' prop
 
 The 'inlineStyle' prop is present in all patterns that are styled components. This prop receives an object with three optional parameters, where each parameter corresponds to a breakpoint, indicating that the style associated with it will be applied from that point onwards. 
 
@@ -44,7 +44,7 @@ The 'inlineStyle' prop is present in all patterns that are styled components. Th
     }}
   >
     ...
-  <Pattern/>
+  </Pattern>
 ```
 
 __Breakpoints Data:__
