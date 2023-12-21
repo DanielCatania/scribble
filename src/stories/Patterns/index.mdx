@@ -1,0 +1,83 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Patterns/What are Patterns?" />
+
+# Patterns
+
+## Index
+- [What are Patterns?](#what-are-patterns)
+- [Which the difference between components and patterns?](#which-the-difference-between-components-and-patterns)
+- [The 'inlineStyle' Prop](#the-inlinestyle-prop)
+- [How to build patterns?](#how-to-build-patterns)
+
+## What are Patterns?
+
+Patterns are pieces to build structures (sections, pages, etc). These are highly customizable, especially with regards to style components, all of which display the 'inlineStyle' prop, enabling more comprehensive styling based on breakpoints and do not present own content.
+
+Patterns and the 'inlineStyle' property are fundamental tools to speed up the process of developing new features. The main purpose is to avoid the constant need to create new components, providing a more flexible and agile approach. When using patterns, we seek to create abstract components that can be reused in different parts of the project. Specific customization of each pattern instance is achieved through the 'inlineStyle' property. This property allows for precise style adjustments without the need to create new components for each variation. 
+
+The flexibility of 'inlineStyle' offers an efficient way to deal with design quirks without cluttering the code with multiple similar components. By adopting this approach, we gain simplicity in the workflow, avoiding the unnecessary creation of specific components. This results in more agile development that is less prone to redundancies, allowing the team to focus more on business logic and less on repetitively creating component structures.
+
+
+## What is the difference between components and patterns?
+
+Components are structures, such as header, footer, etc. They are less customizable than patterns, having few customizations, such as language and variables, and already present own content.
+
+## The 'inlineStyle' Prop
+
+The 'inlineStyle' prop is present in all patterns that are styled components. This prop receives an object with three optional parameters, where each parameter corresponds to a breakpoint, indicating that the style associated with it will be applied from that point onwards. 
+
+*Note: Remembering that you must consider the style that already comes in the pattern to create your inline style.
+
+```
+  <Pattern
+    inlineStyle={{
+      xs: `
+        width: 100%;
+      `,
+      md: `
+        width: 50%;
+      `,
+      lg: `
+        width: 30%;
+      `,
+    }}
+  >
+    ...
+  <Pattern/>
+```
+
+__Breakpoints Data:__
+
+__xs__: 0px to 743px 
+__md__: 744px to 1023px 
+__lg__: 1024px above
+
+## How to build patterns? 
+
+To build patterns the project has a snippet that the prefix is "pattern", the prefix generates the following code:
+
+```
+import styled from "styled-components";
+import { PatternProps } from "@/type";
+
+export interface Props extends PatternProps {}
+
+const Pattern = styled.div.withConfig({
+  shouldForwardProp: (props) => !["inlineStyle"].includes(props),
+})<Props>`
+  ...
+
+  ${({ inlineStyle }) => inlineStyle?.xs}
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["md"]}) {
+    ${({ inlineStyle }) => inlineStyle?.md}
+  }
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints["lg"]}) {
+    ${({ inlineStyle }) => inlineStyle?.lg}
+  }
+`;
+
+export default Pattern;
+```
+
+*Always remember to document your code for others who come later, others and even yourself :)
