@@ -1,0 +1,28 @@
+{
+  "Create pattern file": {
+    "prefix": "pattern",
+    "body": [
+      "import styled from 'styled-components';",
+      "import { PatternProps } from '@/type';",
+      "",
+      "export interface Props extends PatternProps {}",
+      "",
+      "const Pattern = styled.div.withConfig({",
+      "shouldForwardProp: (props) => !['inlineStyle'].includes(props),",
+      "})<Props>`",
+      "...",
+      "",
+      "${({ inlineStyle }) => inlineStyle?.xs}",
+      "@media screen and (min-width: ${({ theme }) => theme.breakpoints['md']}) {",
+      "${({ inlineStyle }) => inlineStyle?.md}",
+      "}",
+      "@media screen and (min-width: ${({ theme }) => theme.breakpoints['lg']}) {",
+      "${({ inlineStyle }) => inlineStyle?.lg}"
+      "}"
+      "`;",
+      "",
+      "export default Pattern;"
+    ],
+    "description": "Creates a base file with a stylized pattern"
+  }
+}
