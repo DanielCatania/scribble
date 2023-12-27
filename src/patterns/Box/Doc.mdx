@@ -1,0 +1,49 @@
+import { Canvas, Meta } from '@storybook/blocks';
+
+import * as Stories from './Story.stories.tsx';
+
+<Meta of={Stories} />
+
+# Box
+
+Box is a basic pattern, an encapsulator.
+
+<Canvas of={Stories.Default} />
+
+## Defaults
+
+### Style
+
+The default style has flexbox spacing, aligning elements on the Y axis and spacing between elements on the X axis.
+
+```
+display: flex;
+align-items: center;
+justify-content: space-between;
+```
+
+### Tag
+
+The default tag is the div.
+
+## Code
+
+```
+const style = {
+  xs: `
+    width: 50px; 
+    height: 50px; 
+    color: white; 
+    background-color: blue; 
+    justify-content: center;
+  `,
+}
+
+return (
+  <Box>
+    <Box inlineStyle={style}>1</Box>
+    <Box inlineStyle={style}>2</Box>
+    <Box inlineStyle={style}>3</Box>
+  </Box>
+);
+```
