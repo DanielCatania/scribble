@@ -22,7 +22,7 @@ jobs:
       - run: git config user.name '$USER_NAME'
       - run: git config user.email $USER_EMAIL
       - run: yarn install
-        working-directory: ./web // folder that contains your storybook, if it is in the ./ folder, there is no need
+        working-directory: ./web
       - run: yarn build:docs
         working-directory: ./web
       - run: git add .
