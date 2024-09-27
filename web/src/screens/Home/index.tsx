@@ -1,16 +1,11 @@
+import Button from "@/patterns/Button";
 import React from "react";
-import Logo from "@/components/Logo";
-import Text from "@/patterns/Text";
 
 export default function HomeScreen() {
   return (
     <>
-      <Text>Home</Text>
-      <Logo />
-      <Logo long />
-      <Logo targetHome long />
-      <div className="h-screen"></div>
-      <Logo notPriority targetHome />
+      <Button onClick={() => alert("Click")}>Click</Button>
+      <Button className="bg-s-100 text-n-250">Click</Button>
     </>
   );
 }
