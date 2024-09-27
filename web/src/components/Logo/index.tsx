@@ -5,7 +5,7 @@ import Image from "next/image";
 export interface ILogo {
   long?: boolean;
   targetHome?: boolean;
-  notPriority?: boolean; // defines that image loading should be a priority. When it is below the fold it should be set to true.
+  notPriority?: boolean;
 }
 
 export default function Logo({
