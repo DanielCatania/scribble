@@ -16,8 +16,8 @@ export default function Logo({
   const href = targetHome ? "/" : "/app";
   const data = {
     src: long ? "/logo.svg" : "/short-logo.svg",
-    width: long ? 300 : 75,
-    height: long ? 100 : 85,
+    width: long ? 265 : 75,
+    height: long ? 80 : 85,
   };
 
   return (
