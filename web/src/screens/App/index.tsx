@@ -2,15 +2,15 @@ import React from "react";
 import Logo from "@/components/Logo";
 import Text from "@/patterns/Text";
 
-export default function HomeScreen() {
+export default function AppScreen() {
   return (
     <>
-      <Text>Home</Text>
+      <Text>App</Text>
       <Logo />
       <Logo long />
-      <Logo targetHome long />
+      <Logo targetHome />
       <div className="h-screen"></div>
-      <Logo notPriority targetHome />
+      <Logo notPriority />
     </>
   );
 }
