@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npx tsx watch app.ts"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.0.1",
+    "@types/node": "^22.10.2",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.0.1"
+  }
+}
