@@ -1,9 +1,9 @@
 import { FastifyInstance } from "fastify";
-import UserView from "../view/User";
+import UserController from "../controller/User";
 
 const routes = (app: FastifyInstance) => {
-  app.post("/users", UserView.requestForCreateUser);
-  app.post("/users/login", UserView.getTokensByCredentials);
+  app.post("/users", UserController.createUser);
+  app.post("/users/login", UserController.getTokensByCredentials);
 };
 
 export default routes;
