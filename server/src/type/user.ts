@@ -7,7 +7,7 @@ export interface IUserContent {
 }
 
 export interface IUser extends IUserContent {
-  id: number;
+  id: string;
   salt: string;
 }
 

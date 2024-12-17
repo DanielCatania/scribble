@@ -8,7 +8,7 @@ export default class UserView {
     reply: FastifyReply
   ) {
     try {
-      const id = parseInt(request.params.id);
+      const { id } = request.params;
 
       const userResponse = await UserController.getUserById(id);
 

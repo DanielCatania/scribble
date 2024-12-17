@@ -16,4 +16,8 @@ function createHash(mainInfo: string, salt: string = "") {
   return hash;
 }
 
-export { createHash, generateSalt };
+function generateUUID() {
+  return crypto.randomUUID();
+}
+
+export { createHash, generateSalt, generateUUID };
