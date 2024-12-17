@@ -33,7 +33,10 @@ export const userContentValidation = (
     userContentSchema.parse(content);
     return content;
   } catch (error) {
-    AppError.handleError(new AppError(400, String(error)), reply);
+    AppError.handleError(
+      new AppError(400, "The provided structure is not consistent", error),
+      reply
+    );
     return null;
   }
 };
@@ -48,7 +51,10 @@ export const userCredentialsValidation = (
     userCredentialsSchema.parse(credentials);
     return credentials;
   } catch (error) {
-    AppError.handleError(new AppError(400, String(error)), reply);
+    AppError.handleError(
+      new AppError(400, "The provided structure is not consistent", error),
+      reply
+    );
     return null;
   }
 };
