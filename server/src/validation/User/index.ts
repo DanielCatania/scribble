@@ -34,7 +34,7 @@ export const userContentValidation = (
     return content;
   } catch (error) {
     AppError.handleError(new AppError(400, String(error)), reply);
-    return false;
+    return null;
   }
 };
 
@@ -49,6 +49,6 @@ export const userCredentialsValidation = (
     return credentials;
   } catch (error) {
     AppError.handleError(new AppError(400, String(error)), reply);
-    return false;
+    return null;
   }
 };

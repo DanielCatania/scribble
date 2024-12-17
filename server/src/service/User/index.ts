@@ -9,15 +9,11 @@ export default class UserService {
     try {
       const id = TokenService.verifyRefreshToken(refreshToken);
 
-      if (id instanceof AppError) throw id;
-
       const tokens = TokenService.generateUserTokens(id);
-
-      if (tokens instanceof AppError) throw tokens;
 
       return tokens;
     } catch (error) {
-      return AppError.handleError(error);
+      throw AppError.handleError(error);
     }
   }
 
@@ -44,7 +40,7 @@ export default class UserService {
 
       return tokens;
     } catch (error) {
-      return AppError.handleError(error);
+      throw AppError.handleError(error);
     }
   }
 
@@ -57,8 +53,6 @@ export default class UserService {
 
       const tokens = TokenService.generateUserTokens(id);
 
-      if (tokens instanceof AppError) throw tokens;
-
       await db.user.create({
         data: {
           ...userContent,
@@ -70,7 +64,7 @@ export default class UserService {
 
       return tokens;
     } catch (error) {
-      return AppError.handleError(error);
+      throw AppError.handleError(error);
     }
   }
 }

@@ -29,7 +29,7 @@ export default class TokenService {
 
       return { accessToken, refreshToken } as IUserTokens;
     } catch (error) {
-      return AppError.handleError(error);
+      throw AppError.handleError(error);
     }
   }
 
@@ -45,7 +45,7 @@ export default class TokenService {
 
       return payload.id;
     } catch (error) {
-      return AppError.handleError(new AppError(401, "Invalid Refresh Token"));
+      throw AppError.handleError(new AppError(401, "Invalid Refresh Token"));
     }
   }
 }

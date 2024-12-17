@@ -19,8 +19,6 @@ export default class UserController {
         refreshToken
       );
 
-      if (tokens instanceof AppError) throw tokens;
-
       reply.status(200).send({ tokens });
     } catch (error) {
       AppError.handleError(error, reply);
@@ -36,8 +34,6 @@ export default class UserController {
 
     try {
       const tokens = await UserService.getUserTokensByCredentials(credentials);
-
-      if (tokens instanceof AppError) throw tokens;
 
       reply.status(200).send({ tokens });
     } catch (error) {
@@ -55,8 +51,6 @@ export default class UserController {
 
     try {
       const userTokens = await UserService.createUser(content);
-
-      if (userTokens instanceof AppError) throw userTokens;
 
       reply.status(201).send({ tokens: userTokens });
     } catch (error) {
