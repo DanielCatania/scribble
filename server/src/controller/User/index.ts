@@ -8,6 +8,24 @@ import {
 import AppError from "../../utils/error";
 
 export default class UserController {
+  static async getTokensByRefreshToken(
+    request: FastifyRequest<{ Body: { refreshToken: string } }>,
+    reply: FastifyReply
+  ) {
+    try {
+      const { refreshToken } = request.body;
+
+      const tokens = await UserService.getUserTokensByRefreshToken(
+        refreshToken
+      );
+
+      if (tokens instanceof AppError) throw tokens;
+
+      reply.status(200).send({ tokens });
+    } catch (error) {
+      AppError.handleError(error, reply);
+    }
+  }
   static async getTokensByCredentials(
     request: FastifyRequest<{ Body: IUserCredentials }>,
     reply: FastifyReply

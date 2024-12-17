@@ -6,6 +6,32 @@ import { z } from "zod";
 import AppError from "../../utils/error";
 
 export default class UserService {
+  static async getUserTokensByRefreshToken(refreshToken: string) {
+    try {
+      const { REFRESH_TOKEN_KEY } = UserService.getKeys();
+
+      try {
+        jwt.verify(refreshToken, REFRESH_TOKEN_KEY);
+      } catch (error) {
+        throw new AppError(401, "Invalid Refresh Token");
+      }
+
+      const payload = jwt.verify(refreshToken, REFRESH_TOKEN_KEY);
+
+      if (!payload || typeof payload === "string" || !payload.id) {
+        throw new AppError(401, "Invalid token payload");
+      }
+
+      const tokens = this.generateUserTokens(payload.id);
+
+      if (tokens instanceof AppError) throw tokens;
+
+      return tokens;
+    } catch (error) {
+      return AppError.handleError(error);
+    }
+  }
+
   static async getUserTokensByCredentials({
     email,
     password,
@@ -33,15 +59,21 @@ export default class UserService {
     }
   }
 
+  private static getKeys() {
+    const REFRESH_TOKEN_KEY = process.env.REFRESH_TOKEN_KEY;
+    const ACCESS_TOKEN_KEY = process.env.ACCESS_TOKEN_KEY;
+
+    if (!REFRESH_TOKEN_KEY || !ACCESS_TOKEN_KEY)
+      throw new AppError(500, "Absence of keys for signing tokens");
+
+    return { REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY };
+  }
+
   private static generateUserTokens(id: string) {
     try {
       z.string().uuid().parse(id);
 
-      const REFRESH_TOKEN_KEY = process.env.REFRESH_TOKEN_KEY;
-      const ACCESS_TOKEN_KEY = process.env.ACCESS_TOKEN_KEY;
-
-      if (!REFRESH_TOKEN_KEY || !ACCESS_TOKEN_KEY)
-        throw new AppError(500, "Absence of keys for signing tokens");
+      const { REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY } = UserService.getKeys();
 
       const refreshToken = jwt.sign({ id }, REFRESH_TOKEN_KEY, {
         expiresIn: "7d",
