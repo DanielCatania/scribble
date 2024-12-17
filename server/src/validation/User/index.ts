@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { IUserContent, IUserCredentials } from "../../type/user";
+import AppError from "../../utils/error";
 
 const userCredentialsValidate = {
   email: z.string().email({ message: "Invalid email format" }),
@@ -32,7 +33,7 @@ export const userContentValidation = (
     userContentSchema.parse(content);
     return content;
   } catch (error) {
-    reply.status(400).send({ status: "400: Bad Request", error });
+    AppError.handleError(new AppError(400, String(error)), reply);
     return false;
   }
 };
@@ -47,7 +48,7 @@ export const userCredentialsValidation = (
     userCredentialsSchema.parse(credentials);
     return credentials;
   } catch (error) {
-    reply.status(400).send({ status: "400: Bad Request", error });
+    AppError.handleError(new AppError(400, String(error)), reply);
     return false;
   }
 };
