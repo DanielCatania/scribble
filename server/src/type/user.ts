@@ -11,6 +11,11 @@ export interface IUser extends IUserContent {
   salt: string;
 }
 
+export interface IUserTokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
 export const userContentSchema = z.object({
   name: z.string().min(3, { message: "The name must have at least 3 letters" }),
   email: z.string().email({ message: "Invalid email format" }),

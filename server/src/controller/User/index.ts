@@ -1,17 +1,34 @@
 import db from "../../repository";
-import { IUser, IUserContent } from "../../type/user";
+import { IUserContent, IUserTokens } from "../../type/user";
 import { generateSalt, createHash, generateUUID } from "../../utils/crypto";
+import jwt from "jsonwebtoken";
+import { z } from "zod";
 
 export default class UserController {
-  static async getUserById(id: string) {
+  static generateUserTokens(id: string) {
     try {
-      const selectedUser: IUser | null = await db.user.findUnique({
-        where: { id },
+      z.string().uuid().parse(id);
+
+      const REFRESH_TOKEN_KEY = process.env.REFRESH_TOKEN_KEY;
+      const ACCESS_TOKEN_KEY = process.env.ACCESS_TOKEN_KEY;
+
+      if (!REFRESH_TOKEN_KEY || !ACCESS_TOKEN_KEY)
+        throw new Error("500: Absence of keys for signing tokens");
+
+      const refreshToken = jwt.sign({ id }, REFRESH_TOKEN_KEY, {
+        expiresIn: "7d",
+      });
+      const accessToken = jwt.sign({ id }, ACCESS_TOKEN_KEY, {
+        expiresIn: "60s",
       });
 
-      return selectedUser;
+      return { accessToken, refreshToken } as IUserTokens;
     } catch (error) {
-      return String(error);
+      if (error instanceof Error) {
+        return error;
+      } else {
+        return new Error(`An unknown error occurred: ${error}`);
+      }
     }
   }
 
@@ -22,7 +39,11 @@ export default class UserController {
       const password = userContent.password + salt;
       const hashedPassword = createHash(password, salt);
 
-      const newUser: IUser = await db.user.create({
+      const tokens = UserController.generateUserTokens(id);
+
+      if (tokens instanceof Error) throw tokens;
+
+      await db.user.create({
         data: {
           ...userContent,
           id,
@@ -31,9 +52,13 @@ export default class UserController {
         },
       });
 
-      return newUser;
+      return tokens;
     } catch (error) {
-      return String(error);
+      if (error instanceof Error) {
+        return error;
+      } else {
+        return new Error(`An unknown error occurred: ${error}`);
+      }
     }
   }
 }
