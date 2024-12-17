@@ -1,11 +1,39 @@
 import db from "../../repository";
-import { IUserContent, IUserTokens } from "../../type/user";
+import { IUserContent, IUserCredentials, IUserTokens } from "../../type/user";
 import { generateSalt, createHash, generateUUID } from "../../utils/crypto";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 
 export default class UserController {
-  static generateUserTokens(id: string) {
+  static async getUserTokensByEmail({ email, password }: IUserCredentials) {
+    try {
+      const selectedUser = await db.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (!selectedUser)
+        throw new Error(`404: Not Found User with email: ${email}`);
+
+      const hashedPassword = createHash(password, selectedUser.salt);
+
+      if (hashedPassword !== selectedUser.password)
+        throw new Error("401:Wrong password");
+
+      const tokens = this.generateUserTokens(selectedUser.id);
+
+      return tokens;
+    } catch (error) {
+      if (error instanceof Error) {
+        return error;
+      } else {
+        return new Error(`An unknown error occurred: ${error}`);
+      }
+    }
+  }
+
+  private static generateUserTokens(id: string) {
     try {
       z.string().uuid().parse(id);
 
@@ -36,7 +64,7 @@ export default class UserController {
     try {
       const id = generateUUID();
       const salt = generateSalt();
-      const password = userContent.password + salt;
+      const password = userContent.password;
       const hashedPassword = createHash(password, salt);
 
       const tokens = UserController.generateUserTokens(id);
