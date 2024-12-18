@@ -4,7 +4,7 @@ import { IUserContent, IUserCredentials } from "../../type/user";
 import {
   userContentValidation,
   userCredentialsValidation,
-} from "../../validation/User";
+} from "../../service/User/validation";
 import AppError from "../../utils/error";
 
 export default class UserController {
