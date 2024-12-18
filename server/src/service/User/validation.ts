@@ -3,58 +3,65 @@ import { z } from "zod";
 import { IUserContent, IUserCredentials } from "../../type/user";
 import AppError from "../../utils/error";
 
-const userCredentialsValidate = {
-  email: z.string().email({ message: "Invalid email format" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[\p{L}\d!@#$%^&*(),.?":{}|<>]{8,}$/u,
-      {
-        message:
-          "Password must contain at least one lowercase letter, one uppercase letter, one special character, and one number.",
-      }
-    ),
-};
+export default class UserValidationService {
+  private static defaultError = new AppError(
+    400,
+    "The provided structure is not valid"
+  );
 
-export const userCredentialsSchema = z.object(userCredentialsValidate);
+  private static standardValidationsForUserCredentials = {
+    email: z.string().email({ message: "Invalid email format" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" })
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[\p{L}\d!@#$%^&*(),.?":{}|<>]{8,}$/u,
+        {
+          message:
+            "Password must contain at least one lowercase letter, one uppercase letter, one special character, and one number.",
+        }
+      ),
+  };
 
-export const userContentSchema = z.object({
-  name: z.string().min(3, { message: "The name must have at least 3 letters" }),
-  ...userCredentialsValidate,
-});
+  private static userCredentialsSchema = z.object(
+    this.standardValidationsForUserCredentials
+  );
+  private static userContentSchema = z.object({
+    name: z
+      .string()
+      .min(3, { message: "The name must have at least 3 letters" }),
+    ...this.standardValidationsForUserCredentials,
+  });
 
-export const userContentValidation = (
-  req: FastifyRequest<{ Body: { content: IUserContent } }>,
-  reply: FastifyReply
-) => {
-  const content = req.body.content;
-  try {
-    userContentSchema.parse(content);
-    return content;
-  } catch (error) {
-    AppError.handleError(
-      new AppError(400, "The provided structure is not consistent", error),
-      reply
-    );
-    return null;
+  static getTheValidatedContent(
+    req: FastifyRequest<{ Body: { content: IUserContent } }>
+  ) {
+    const content = req.body.content;
+    try {
+      this.userContentSchema.parse(content);
+      return content;
+    } catch (error) {
+      throw new AppError(
+        this.defaultError.status,
+        this.defaultError.message,
+        error
+      );
+    }
   }
-};
 
-export const userCredentialsValidation = (
-  req: FastifyRequest<{ Body: IUserCredentials }>,
-  reply: FastifyReply
-) => {
-  const credentials = req.body;
-
-  try {
-    userCredentialsSchema.parse(credentials);
-    return credentials;
-  } catch (error) {
-    AppError.handleError(
-      new AppError(400, "The provided structure is not consistent", error),
-      reply
-    );
-    return null;
+  static getTheValidatedUserCredentials(
+    req: FastifyRequest<{ Body: IUserCredentials }>
+  ) {
+    try {
+      const credentials = req.body;
+      this.userCredentialsSchema.parse(credentials);
+      return credentials;
+    } catch (error) {
+      throw new AppError(
+        this.defaultError.status,
+        this.defaultError.message,
+        error
+      );
+    }
   }
-};
+}
