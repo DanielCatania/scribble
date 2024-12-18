@@ -16,3 +16,9 @@ export interface IUserTokens {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface IUserIdentity {
+  id: string;
+  email: string;
+  name: string;
+}

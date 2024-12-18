@@ -1,13 +1,50 @@
 import db from "../../repository";
-import { IUserContent, IUserCredentials } from "../../type/user";
+import {
+  IUser,
+  IUserContent,
+  IUserCredentials,
+  IUserIdentity,
+} from "../../type/user";
 import { generateSalt, createHash, generateUUID } from "../../utils/crypto";
 import TokenService from "../Tokens";
 import AppError from "../../utils/error";
 
 export default class UserService {
+  private static async getUserByAccessToken(accessToken: string) {
+    try {
+      const id = TokenService.getIdByAccessToken(accessToken);
+
+      const selectedUser: IUser | null = await db.user.findUnique({
+        where: { id },
+      });
+
+      if (!selectedUser) throw new AppError(404, "User Not Found");
+
+      return selectedUser;
+    } catch (error) {
+      throw AppError.handleError(error);
+    }
+  }
+
+  static async getUserIdentifyByAccessToken(accessToken: string) {
+    try {
+      const user = await UserService.getUserByAccessToken(accessToken);
+
+      const userIdentify: IUserIdentity = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      };
+
+      return userIdentify;
+    } catch (error) {
+      throw AppError.handleError(error);
+    }
+  }
+
   static async getUserTokensByRefreshToken(refreshToken: string) {
     try {
-      const id = TokenService.verifyRefreshToken(refreshToken);
+      const id = TokenService.getIdByRefreshToken(refreshToken);
 
       const tokens = TokenService.generateUserTokens(id);
 

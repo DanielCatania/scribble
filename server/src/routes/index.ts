@@ -5,6 +5,7 @@ const routes = (app: FastifyInstance) => {
   app.post("/users", UserController.createUser);
   app.post("/users/login", UserController.getTokensByCredentials);
   app.post("/users/refresh", UserController.getTokensByRefreshToken);
+  app.post("/users/identify", UserController.getUserIdentifyByAccessToken);
 };
 
 export default routes;

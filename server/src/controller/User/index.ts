@@ -8,6 +8,23 @@ import UserValidationService from "../../service/User/validation";
 import AppError from "../../utils/error";
 
 export default class UserController {
+  static async getUserIdentifyByAccessToken(
+    request: FastifyRequest<{ Body: { accessToken: string } }>,
+    reply: FastifyReply
+  ) {
+    try {
+      const { accessToken } = request.body;
+
+      const userIdentify = await UserService.getUserIdentifyByAccessToken(
+        accessToken
+      );
+
+      reply.status(200).send({ ...userIdentify });
+    } catch (error) {
+      AppError.handleError(error, reply);
+    }
+  }
+
   static async getTokensByRefreshToken(
     request: FastifyRequest<{ Body: { refreshToken: string } }>,
     reply: FastifyReply
@@ -24,6 +41,7 @@ export default class UserController {
       AppError.handleError(error, reply);
     }
   }
+
   static async getTokensByCredentials(
     request: FastifyRequest<{ Body: IUserCredentials }>,
     reply: FastifyReply
