@@ -8,6 +8,28 @@ import UserValidationService from "../../service/User/validation";
 import AppError from "../../utils/error";
 
 export default class UserController {
+  static async changePasswordByCredentials(
+    request: FastifyRequest<{
+      Body: { credentials: IUserCredentials; newPassword: string };
+    }>,
+    reply: FastifyReply
+  ) {
+    try {
+      const credentials = UserValidationService.getTheValidatedUserCredentials(
+        request.body.credentials
+      );
+
+      const { newPassword } = request.body;
+      UserValidationService.validatePassword(newPassword);
+
+      await UserService.updatePasswordByCredentials(credentials, newPassword);
+
+      reply.status(200).send({ message: "Password Changed Successfully" });
+    } catch (error) {
+      AppError.handleError(error, reply);
+    }
+  }
+
   static async getUserIdentifyByAccessToken(
     request: FastifyRequest<{ Body: { accessToken: string } }>,
     reply: FastifyReply
@@ -47,8 +69,9 @@ export default class UserController {
     reply: FastifyReply
   ) {
     try {
-      const credentials =
-        UserValidationService.getTheValidatedUserCredentials(request);
+      const credentials = UserValidationService.getTheValidatedUserCredentials(
+        request.body
+      );
 
       const tokens = await UserService.getUserTokensByCredentials(credentials);
 
@@ -63,7 +86,9 @@ export default class UserController {
     reply: FastifyReply
   ) {
     try {
-      const content = UserValidationService.getTheValidatedContent(request);
+      const content = UserValidationService.getTheValidatedContent(
+        request.body.content
+      );
 
       const userTokens = await UserService.createUser(content);
 

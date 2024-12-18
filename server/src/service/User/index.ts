@@ -54,10 +54,18 @@ export default class UserService {
     }
   }
 
-  static async getUserTokensByCredentials({
-    email,
-    password,
-  }: IUserCredentials) {
+  static async getUserTokensByCredentials(credentials: IUserCredentials) {
+    try {
+      const selectedUser = await UserService.getUserByCredentials(credentials);
+      const tokens = TokenService.generateUserTokens(selectedUser.id);
+
+      return tokens;
+    } catch (error) {
+      throw AppError.handleError(error);
+    }
+  }
+
+  static async getUserByCredentials({ email, password }: IUserCredentials) {
     try {
       const selectedUser = await db.user.findUnique({
         where: {
@@ -73,9 +81,32 @@ export default class UserService {
       if (hashedPassword !== selectedUser.password)
         throw new AppError(401, "Wrong password");
 
-      const tokens = TokenService.generateUserTokens(selectedUser.id);
+      return selectedUser as IUser;
+    } catch (error) {
+      throw AppError.handleError(error);
+    }
+  }
 
-      return tokens;
+  static async updatePasswordByCredentials(
+    credentials: IUserCredentials,
+    newPassword: string
+  ) {
+    try {
+      const user = await UserService.getUserByCredentials(credentials);
+
+      const hashedPassword = createHash(newPassword, user.salt);
+
+      if (hashedPassword === user.password)
+        throw new AppError(400, "This password has already been used before");
+
+      await db.user.update({
+        data: {
+          password: hashedPassword,
+        },
+        where: {
+          id: user.id,
+        },
+      });
     } catch (error) {
       throw AppError.handleError(error);
     }

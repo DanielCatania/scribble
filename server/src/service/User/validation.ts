@@ -9,7 +9,7 @@ export default class UserValidationService {
     "The provided structure is not valid"
   );
 
-  private static standardValidationsForUserCredentials = {
+  private static validationsForUserCredentials = {
     email: z.string().email({ message: "Invalid email format" }),
     password: z
       .string()
@@ -24,19 +24,25 @@ export default class UserValidationService {
   };
 
   private static userCredentialsSchema = z.object(
-    this.standardValidationsForUserCredentials
+    this.validationsForUserCredentials
   );
+
   private static userContentSchema = z.object({
     name: z
       .string()
       .min(3, { message: "The name must have at least 3 letters" }),
-    ...this.standardValidationsForUserCredentials,
+    ...this.validationsForUserCredentials,
   });
 
-  static getTheValidatedContent(
-    req: FastifyRequest<{ Body: { content: IUserContent } }>
-  ) {
-    const content = req.body.content;
+  static validatePassword(password: string) {
+    this.validationsForUserCredentials.password.parse(password);
+  }
+
+  static validateEmail(email: string) {
+    this.validationsForUserCredentials.email.parse(email);
+  }
+
+  static getTheValidatedContent(content: IUserContent) {
     try {
       this.userContentSchema.parse(content);
       return content;
@@ -49,11 +55,8 @@ export default class UserValidationService {
     }
   }
 
-  static getTheValidatedUserCredentials(
-    req: FastifyRequest<{ Body: IUserCredentials }>
-  ) {
+  static getTheValidatedUserCredentials(credentials: IUserCredentials) {
     try {
-      const credentials = req.body;
       this.userCredentialsSchema.parse(credentials);
       return credentials;
     } catch (error) {
