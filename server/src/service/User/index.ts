@@ -1,4 +1,3 @@
-import db from "../../repository";
 import {
   IUser,
   IUserContent,
@@ -8,131 +7,89 @@ import {
 import { generateSalt, createHash, generateUUID } from "../../utils/crypto";
 import TokenService from "../Tokens";
 import AppError from "../../utils/error";
+import UserRepository from "../../repository/User";
 
 export default class UserService {
   private static async getUserByAccessToken(accessToken: string) {
-    try {
-      const id = TokenService.getIdByAccessToken(accessToken);
+    const id = TokenService.getIdByAccessToken(accessToken);
 
-      const selectedUser: IUser | null = await db.user.findUnique({
-        where: { id },
-      });
+    const selectedUser: IUser | null = await UserRepository.getById(id);
 
-      if (!selectedUser) throw new AppError(404, "User Not Found");
+    if (!selectedUser) throw new AppError(404, "User Not Found");
 
-      return selectedUser;
-    } catch (error) {
-      throw AppError.handleError(error);
-    }
+    return selectedUser;
   }
 
   static async getUserIdentifyByAccessToken(accessToken: string) {
-    try {
-      const user = await UserService.getUserByAccessToken(accessToken);
+    const user = await UserService.getUserByAccessToken(accessToken);
 
-      const userIdentify: IUserIdentity = {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-      };
+    const userIdentify: IUserIdentity = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    };
 
-      return userIdentify;
-    } catch (error) {
-      throw AppError.handleError(error);
-    }
+    return userIdentify;
   }
 
   static async getUserTokensByRefreshToken(refreshToken: string) {
-    try {
-      const id = TokenService.getIdByRefreshToken(refreshToken);
+    const id = TokenService.getIdByRefreshToken(refreshToken);
 
-      const tokens = TokenService.generateUserTokens(id);
+    const tokens = TokenService.generateUserTokens(id);
 
-      return tokens;
-    } catch (error) {
-      throw AppError.handleError(error);
-    }
+    return tokens;
   }
 
   static async getUserTokensByCredentials(credentials: IUserCredentials) {
-    try {
-      const selectedUser = await UserService.getUserByCredentials(credentials);
-      const tokens = TokenService.generateUserTokens(selectedUser.id);
+    const selectedUser = await UserService.getUserByCredentials(credentials);
+    const tokens = TokenService.generateUserTokens(selectedUser.id);
 
-      return tokens;
-    } catch (error) {
-      throw AppError.handleError(error);
-    }
+    return tokens;
   }
 
   static async getUserByCredentials({ email, password }: IUserCredentials) {
-    try {
-      const selectedUser = await db.user.findUnique({
-        where: {
-          email,
-        },
-      });
+    const selectedUser = await UserRepository.getByEmail(email);
 
-      if (!selectedUser)
-        throw new AppError(404, `Not Found User with email: ${email}`);
+    if (!selectedUser)
+      throw new AppError(404, `Not Found User with email: ${email}`);
 
-      const hashedPassword = createHash(password, selectedUser.salt);
+    const hashedPassword = createHash(password, selectedUser.salt);
 
-      if (hashedPassword !== selectedUser.password)
-        throw new AppError(401, "Wrong password");
+    if (hashedPassword !== selectedUser.password)
+      throw new AppError(401, "Wrong password");
 
-      return selectedUser as IUser;
-    } catch (error) {
-      throw AppError.handleError(error);
-    }
+    return selectedUser as IUser;
   }
 
   static async updatePasswordByCredentials(
     credentials: IUserCredentials,
     newPassword: string
   ) {
-    try {
-      const user = await UserService.getUserByCredentials(credentials);
+    const user = await UserService.getUserByCredentials(credentials);
 
-      const hashedPassword = createHash(newPassword, user.salt);
+    const hashedPassword = createHash(newPassword, user.salt);
 
-      if (hashedPassword === user.password)
-        throw new AppError(400, "This password has already been used before");
+    if (hashedPassword === user.password)
+      throw new AppError(400, "This password has already been used before");
 
-      await db.user.update({
-        data: {
-          password: hashedPassword,
-        },
-        where: {
-          id: user.id,
-        },
-      });
-    } catch (error) {
-      throw AppError.handleError(error);
-    }
+    await UserRepository.updateById(user.id, { password: hashedPassword });
   }
 
   static async createUser(userContent: IUserContent) {
-    try {
-      const id = generateUUID();
-      const salt = generateSalt();
-      const password = userContent.password;
-      const hashedPassword = createHash(password, salt);
+    const id = generateUUID();
+    const salt = generateSalt();
+    const password = userContent.password;
+    const hashedPassword = createHash(password, salt);
 
-      const tokens = TokenService.generateUserTokens(id);
+    const tokens = TokenService.generateUserTokens(id);
 
-      await db.user.create({
-        data: {
-          ...userContent,
-          id,
-          salt,
-          password: hashedPassword,
-        },
-      });
+    await UserRepository.create({
+      ...userContent,
+      id,
+      salt,
+      password: hashedPassword,
+    });
 
-      return tokens;
-    } catch (error) {
-      throw AppError.handleError(error);
-    }
+    return tokens;
   }
 }
