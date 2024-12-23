@@ -13,4 +13,14 @@ model User {
   email    String @unique
   salt     String
   password String
+  notes    Note[]
+}
+
+model Note {
+  id       String   @id
+  userId   String
+  owner    User     @relation(fields: [userId], references: [id])
+  content  String
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
 }
