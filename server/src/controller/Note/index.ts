@@ -58,7 +58,7 @@ export default class NoteController {
 
       const updateNote = await NoteService.updateNoteContent(
         request.params.id,
-        request.body.note.content
+        request.body.note
       );
 
       reply

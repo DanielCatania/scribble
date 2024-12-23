@@ -1,5 +1,5 @@
 import NoteRepository from "../../repository/Note";
-import { INote } from "../../type/note";
+import { INote, INoteContent } from "../../type/note";
 import { generateUUID } from "../../utils/crypto";
 import AppError from "../../utils/error";
 
@@ -20,8 +20,8 @@ export default class NoteService {
     return note;
   }
 
-  static async updateNoteContent(id: string, content: string) {
-    return await NoteRepository.updateContentById(id, content);
+  static async updateNoteContent(id: string, content: Partial<INoteContent>) {
+    return await NoteRepository.updateById(id, content);
   }
 
   static async createNote(content: string, userId: string) {

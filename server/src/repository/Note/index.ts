@@ -1,11 +1,13 @@
 import db from "..";
-import { INote, INoteBase } from "../../type/note";
+import { INote, INoteBase, INoteContent } from "../../type/note";
 import AppError from "../../utils/error";
 
 export default class NoteRepository {
+  static model = db.note;
+
   static async create(note: INoteBase) {
     try {
-      return (await db.note.create({
+      return (await NoteRepository.model.create({
         data: { ...note },
       })) as INote;
     } catch (error) {
@@ -15,7 +17,7 @@ export default class NoteRepository {
 
   static async getById(id: string) {
     try {
-      return (await db.note.findUnique({
+      return (await NoteRepository.model.findUnique({
         where: { id },
       })) as INote | null;
     } catch (error) {
@@ -25,7 +27,7 @@ export default class NoteRepository {
 
   static async getAllByUserId(userId: string) {
     try {
-      return (await db.note.findMany({
+      return (await NoteRepository.model.findMany({
         where: { userId },
       })) as INote[];
     } catch (error) {
@@ -37,14 +39,14 @@ export default class NoteRepository {
     }
   }
 
-  static async updateContentById(id: string, content: string) {
+  static async updateById(id: string, content: Partial<INoteContent>) {
     try {
-      return (await db.note.update({
+      return (await NoteRepository.model.update({
         where: {
           id,
         },
         data: {
-          content,
+          ...content,
         },
       })) as INote;
     } catch (error) {
@@ -54,11 +56,9 @@ export default class NoteRepository {
 
   static async deleteById(id: string) {
     try {
-      await db.note.delete({
+      await NoteRepository.model.delete({
         where: { id },
       });
-
-      return true as true;
     } catch (error) {
       throw new AppError(500, `Unable to delete note with id ${id}`, error);
     }
