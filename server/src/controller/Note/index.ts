@@ -36,14 +36,34 @@ export default class NoteController {
       const userId = TokenService.getIdByAccessToken(request.body.accessToken);
       const note = await NoteService.getNoteById(request.params.id);
 
-      if (note.userId !== userId) {
-        throw new AppError(
-          401,
-          "The requested note does not belong to this user"
-        );
-      }
+      await NoteService.verifyNoteOwner(note, userId);
 
       reply.status(200).send({ note, message: "Note sent successfully" });
+    } catch (error) {
+      AppError.handleError(error, reply);
+    }
+  }
+
+  static async updateNote(
+    request: FastifyRequest<{
+      Body: { note: INoteContent; accessToken: string };
+      Params: { id: string };
+    }>,
+    reply: FastifyReply
+  ) {
+    try {
+      const userId = TokenService.getIdByAccessToken(request.body.accessToken);
+
+      await NoteService.verifyNoteOwner(request.params.id, userId);
+
+      const updateNote = await NoteService.updateNoteContent(
+        request.params.id,
+        request.body.note.content
+      );
+
+      reply
+        .status(200)
+        .send({ note: updateNote, message: "Note updated successfully" });
     } catch (error) {
       AppError.handleError(error, reply);
     }

@@ -11,6 +11,7 @@ const routes = (app: FastifyInstance) => {
 
   app.post("/note", NoteController.createNote);
   app.post("/note/:id", NoteController.getNote);
+  app.put("/note/:id", NoteController.updateNote);
 };
 
 export default routes;
