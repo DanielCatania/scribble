@@ -68,4 +68,25 @@ export default class NoteController {
       AppError.handleError(error, reply);
     }
   }
+
+  static async deleteNote(
+    request: FastifyRequest<{
+      Body: { accessToken: string };
+      Params: { id: string };
+    }>,
+    reply: FastifyReply
+  ) {
+    try {
+      const userId = TokenService.getIdByAccessToken(request.body.accessToken);
+      const noteId = request.params.id;
+
+      await NoteService.verifyNoteOwner(noteId, userId);
+
+      await NoteService.deleteNoteById(noteId);
+
+      reply.status(200).send({ message: "Note deleted successfully" });
+    } catch (error) {
+      AppError.handleError(error, reply);
+    }
+  }
 }

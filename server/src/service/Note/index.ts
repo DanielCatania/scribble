@@ -38,4 +38,8 @@ export default class NoteService {
 
     return note;
   }
+
+  static async deleteNoteById(id: string) {
+    return await NoteRepository.deleteById(id);
+  }
 }
