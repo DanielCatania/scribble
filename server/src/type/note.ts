@@ -1,4 +1,6 @@
 export interface INoteContent {
+  title: string;
+  selected: boolean;
   content: string;
 }
 

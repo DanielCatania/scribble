@@ -13,9 +13,12 @@ export default class NoteController {
   ) {
     try {
       const userId = TokenService.getIdByAccessToken(request.body.accessToken);
-      const { content } = request.body.note;
+      const noteContent = request.body.note;
 
-      const newNote = await NoteService.createNote(content, userId);
+      if (!noteContent.content)
+        throw new AppError(400, "The content field is required");
+
+      const newNote = await NoteService.createNote(noteContent, userId);
 
       reply
         .status(201)
@@ -46,18 +49,19 @@ export default class NoteController {
 
   static async updateNote(
     request: FastifyRequest<{
-      Body: { note: INoteContent; accessToken: string };
+      Body: { note: Partial<INoteContent>; accessToken: string };
       Params: { id: string };
     }>,
     reply: FastifyReply
   ) {
     try {
       const userId = TokenService.getIdByAccessToken(request.body.accessToken);
+      const noteId = request.params.id;
 
-      await NoteService.verifyNoteOwner(request.params.id, userId);
+      await NoteService.verifyNoteOwner(noteId, userId);
 
       const updateNote = await NoteService.updateNoteContent(
-        request.params.id,
+        noteId,
         request.body.note
       );
 

@@ -20,6 +20,8 @@ model Note {
   id       String   @id
   userId   String
   owner    User     @relation(fields: [userId], references: [id])
+  title    String   @default("Untitled")
+  selected Boolean  @default(false)
   content  String
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt

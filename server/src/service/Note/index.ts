@@ -24,10 +24,10 @@ export default class NoteService {
     return await NoteRepository.updateById(id, content);
   }
 
-  static async createNote(content: string, userId: string) {
+  static async createNote(noteContent: INoteContent, userId: string) {
     const id = generateUUID();
 
-    const newNote = await NoteRepository.create({ id, content, userId });
+    const newNote = await NoteRepository.create({ id, ...noteContent, userId });
     return newNote;
   }
 
