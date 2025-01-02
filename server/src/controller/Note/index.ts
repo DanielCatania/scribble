@@ -93,4 +93,20 @@ export default class NoteController {
       AppError.handleError(error, reply);
     }
   }
+
+  static async getAllNotes(
+    request: FastifyRequest<{ Body: { accessToken: string } }>,
+    reply: FastifyReply
+  ) {
+    try {
+      const userId = TokenService.getIdByAccessToken(request.body.accessToken);
+      const notes = await NoteService.getAllNotesByUserId(userId);
+
+      if (notes.length === 0) throw new AppError(404, "Notes not found");
+
+      reply.status(200).send({ notes, message: "Note sent successfully" });
+    } catch (error) {
+      AppError.handleError(error, reply);
+    }
+  }
 }

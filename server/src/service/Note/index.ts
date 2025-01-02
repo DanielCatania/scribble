@@ -42,4 +42,8 @@ export default class NoteService {
   static async deleteNoteById(id: string) {
     return await NoteRepository.deleteById(id);
   }
+
+  static async getAllNotesByUserId(userId: string) {
+    return await NoteRepository.getAllByUserId(userId);
+  }
 }
