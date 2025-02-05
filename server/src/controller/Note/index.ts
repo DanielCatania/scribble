@@ -3,16 +3,20 @@ import { INoteContent } from "../../type/note";
 import AppError from "../../utils/error";
 import TokenService from "../../service/Tokens";
 import NoteService from "../../service/Note";
+import getTokenFromAuthRequest from "../../utils/request/getTokenFromAuthRequest";
+import { AuthRequest } from "../../type/request";
 
 export default class NoteController {
   static async createNote(
-    request: FastifyRequest<{
-      Body: { note: INoteContent; accessToken: string };
+    request: AuthRequest<{
+      Body: { note: INoteContent };
     }>,
     reply: FastifyReply
   ) {
     try {
-      const userId = TokenService.getIdByAccessToken(request.body.accessToken);
+      const accessToken = getTokenFromAuthRequest(request);
+
+      const userId = TokenService.getIdByAccessToken(accessToken);
       const noteContent = request.body.note;
 
       if (!noteContent.content)
@@ -29,14 +33,15 @@ export default class NoteController {
   }
 
   static async getNote(
-    request: FastifyRequest<{
-      Body: { accessToken: string };
+    request: AuthRequest<{
       Params: { id: string };
     }>,
     reply: FastifyReply
   ) {
     try {
-      const userId = TokenService.getIdByAccessToken(request.body.accessToken);
+      const accessToken = getTokenFromAuthRequest(request);
+
+      const userId = TokenService.getIdByAccessToken(accessToken);
       const note = await NoteService.getNoteById(request.params.id);
 
       await NoteService.verifyNoteOwner(note, userId);
@@ -48,14 +53,17 @@ export default class NoteController {
   }
 
   static async updateNote(
-    request: FastifyRequest<{
-      Body: { note: Partial<INoteContent>; accessToken: string };
+    request: AuthRequest<{
       Params: { id: string };
+      Body: {
+        note: Partial<INoteContent>;
+      };
     }>,
     reply: FastifyReply
   ) {
     try {
-      const userId = TokenService.getIdByAccessToken(request.body.accessToken);
+      const accessToken = getTokenFromAuthRequest(request);
+      const userId = TokenService.getIdByAccessToken(accessToken);
       const noteId = request.params.id;
 
       await NoteService.verifyNoteOwner(noteId, userId);
@@ -74,14 +82,14 @@ export default class NoteController {
   }
 
   static async deleteNote(
-    request: FastifyRequest<{
-      Body: { accessToken: string };
+    request: AuthRequest<{
       Params: { id: string };
     }>,
     reply: FastifyReply
   ) {
     try {
-      const userId = TokenService.getIdByAccessToken(request.body.accessToken);
+      const accessToken = getTokenFromAuthRequest(request);
+      const userId = TokenService.getIdByAccessToken(accessToken);
       const noteId = request.params.id;
 
       await NoteService.verifyNoteOwner(noteId, userId);
@@ -94,12 +102,11 @@ export default class NoteController {
     }
   }
 
-  static async getAllNotes(
-    request: FastifyRequest<{ Body: { accessToken: string } }>,
-    reply: FastifyReply
-  ) {
+  static async getAllNotes(request: AuthRequest, reply: FastifyReply) {
     try {
-      const userId = TokenService.getIdByAccessToken(request.body.accessToken);
+      const accessToken = getTokenFromAuthRequest(request);
+
+      const userId = TokenService.getIdByAccessToken(accessToken);
       const notes = await NoteService.getAllNotesByUserId(userId);
 
       if (notes.length === 0) throw new AppError(404, "Notes not found");

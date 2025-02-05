@@ -5,13 +5,13 @@ import NoteController from "../controller/Note";
 const routes = (app: FastifyInstance) => {
   app.post("/users", UserController.createUser);
   app.post("/users/login", UserController.getTokensByCredentials);
-  app.post("/users/refresh", UserController.getTokensByRefreshToken);
-  app.post("/users/identify", UserController.getUserIdentifyByAccessToken);
-  app.put("/users/password", UserController.changePasswordByCredentials);
-  app.post("/users/note", NoteController.getAllNotes);
+  app.get("/users/refresh", UserController.getTokensByRefreshToken);
+  app.get("/users/identify", UserController.getUserIdentifyByAccessToken);
+  app.patch("/users/password", UserController.changePasswordByCredentials);
+  app.get("/users/note", NoteController.getAllNotes);
 
   app.post("/note", NoteController.createNote);
-  app.post("/note/:id", NoteController.getNote);
+  app.get("/note/:id", NoteController.getNote);
   app.put("/note/:id", NoteController.updateNote);
   app.delete("/note/:id", NoteController.deleteNote);
 };

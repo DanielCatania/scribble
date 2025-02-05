@@ -6,6 +6,8 @@ import UserService from "../../service/User";
 import UserValidationService from "../../service/User/validation";
 
 import AppError from "../../utils/error";
+import getTokenFromAuthRequest from "../../utils/request/getTokenFromAuthRequest";
+import { AuthRequest } from "../../type/request";
 
 export default class UserController {
   static async changePasswordByCredentials(
@@ -31,11 +33,11 @@ export default class UserController {
   }
 
   static async getUserIdentifyByAccessToken(
-    request: FastifyRequest<{ Body: { accessToken: string } }>,
+    request: AuthRequest,
     reply: FastifyReply
   ) {
     try {
-      const { accessToken } = request.body;
+      const accessToken = getTokenFromAuthRequest(request);
 
       const userIdentify = await UserService.getUserIdentifyByAccessToken(
         accessToken
@@ -48,11 +50,11 @@ export default class UserController {
   }
 
   static async getTokensByRefreshToken(
-    request: FastifyRequest<{ Body: { refreshToken: string } }>,
+    request: FastifyRequest<{ Headers: { authorization: string } }>,
     reply: FastifyReply
   ) {
     try {
-      const { refreshToken } = request.body;
+      const refreshToken = getTokenFromAuthRequest(request);
 
       const tokens = await UserService.getUserTokensByRefreshToken(
         refreshToken
